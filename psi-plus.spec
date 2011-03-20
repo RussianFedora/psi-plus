@@ -14,7 +14,7 @@ License:    GPLv2+
 Group:      Applications/Internet
 BuildRoot:  %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-Source0:    http://koji.russianfedora.ru/storage/psi-plus/%{name}-%{version}-%{rev}.tar.bz2
+Source0:    http://koji.russianfedora.ru/storage/psi-plus/%{name}-%{version}-20110119svn3559.tar.bz2
 Source1:    iconsets.tar.gz
 Source2:    language_ru.tar.gz
 Source3:    skins.tar.gz
