@@ -1,2 +1,0 @@
-SOURCES += \
-	$$PWD/commontest.cpp

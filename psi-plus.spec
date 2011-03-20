@@ -1,23 +1,25 @@
-%define rev 20101218svn3411
+%define rev 20110119svn3559
 %define allplugins attentionplugin autoreplyplugin birthdayreminderplugin chessplugin cleanerplugin conferenceloggerplugin extendedoptionsplugin gmailserviceplugin historykeeperplugin icqdieplugin imageplugin juickplugin qipxstatusesplugin screenshotplugin skinsplugin stopspamplugin storagenotesplugin translateplugin watcherplugin contentdownloaderplugin captchaformsplugin
 
-Summary:    Jabber client based on Qt
+Summary:        Jabber client based on Qt
 Summary(ru):    Джаббер клиент основанный на Qt
-Name:       psi-plus
-Version:    0.15
-Release:    0.15.%{rev}%{?dist}
-Epoch:      1
-Packager:   Ivan Romanov <drizt@land.ru>
+Name:           psi-plus
+Version:        0.15
+Release:        0.17.%{rev}%{?dist}
+Epoch:          1
+Packager:       Ivan Romanov <drizt@land.ru>
 
 URL:        http://code.google.com/p/psi-dev/
 License:    GPLv2+
 Group:      Applications/Internet
 BuildRoot:  %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-Source0:    %{name}-%{version}-%{rev}.tar.bz2
+Source0:    http://koji.russianfedora.ru/storage/psi-plus/%{name}-%{version}-%{rev}.tar.bz2
 Source1:    iconsets.tar.gz
 Source2:    language_ru.tar.gz
 Source3:    skins.tar.gz
+Source4:    psi-plus-psimedia.tar.gz
+Source5:    psi-plus-psimedia.desktop
 
 BuildRequires:  qt-devel
 BuildRequires:  zlib-devel
@@ -39,13 +41,11 @@ Requires(hint):     qca-ossl
 # Required for GnuPG encryption
 Requires(hint):     qca-gnupg
 
-Conflicts:  psi
-
 %description
 Psi+ - Psi IM Mod by psi-dev@conference.jabber.ru
 
 %description -l ru
-Psi+ - модификация клиента Psi от команды конференции 
+Psi+ - модификация клиента Psi от команды конференции
 psi-dev@conference.jabber.ru.
 
 %package        plugins
@@ -85,8 +85,8 @@ Iconsets for Psi+
 %package        skins
 Summary:        Iconsets for Psi+
 Summary(ru):    Наборы иконок для Psi+
-Group: Applications/Internet
-Requires: %{name} = %{epoch}:%{version}-%{release}
+Group:          Applications/Internet
+Requires:       %{name} = %{epoch}:%{version}-%{release}
 
 
 %description skins
@@ -95,12 +95,34 @@ Skins Plugin and skins for Psi+
 %description -l ru skins
 Skins Plugin и скины для Psi+
 
+%package        psimedia
+Summary:        Audio and video RTP services for Psi+
+Summary(ru):    Аудио и видевызовы для Psi+
+Group:          Applications/Internet
+Requires:       %{name} = %{epoch}:%{version}-%{release}
+BuildRequires:  gstreamer-plugins-base-devel >= 0.10.22
+BuildRequires:  liboil-devel >= 0.3
+BuildRequires:  speex-devel
+
+%description psimedia
+PsiMedia is a thick abstraction layer for providing audio and
+video RTP services to Psi-like IM clients. The implementation
+is based on GStreamer.
+
+%description -l ru psimedia
+PsiMedia это слой абстракции предоставляющий службы аудио и 
+видеовызовов для Psi-подобных IM клиентов. Его реализация
+основана на GStreamer.
+
 %prep
 %setup -q -n %{name}-%{version}-%{rev}
 
-# Install iconsets
-%{__tar} xzf %{SOURCE1} -C .
+# Untar russian language
 %{__tar} xzf %{SOURCE2} -C .
+
+# Untar psimedia
+%{__rm} -fr ../psi-plus-psimedia
+%{__tar} xzf %{SOURCE4} -C ..
 
 %build
 unset QTDIR
@@ -119,7 +141,7 @@ make %{?_smp_mflags}
 
 lrelease-qt4 psi_ru.ts
 
-cd src/plugins/generic
+pushd src/plugins/generic
 
 for dir in %{allplugins}
 do
@@ -128,7 +150,13 @@ do
   make
   cd ..
 done
+popd
 
+# Make psimedia
+cd ../psi-plus-psimedia
+qconf
+./configure
+make %{?_smp_mflags}
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -137,26 +165,35 @@ export INSTALL_ROOT=$RPM_BUILD_ROOT
 make install
 
 # Install russian
-cp psi_ru.qm $RPM_BUILD_ROOT%{_datadir}/psi/
+cp psi_ru.qm $RPM_BUILD_ROOT%{_datadir}/psi-plus/
+
+# Install iconsets
+%{__tar} xzf %{SOURCE1} -C $RPM_BUILD_ROOT%{_datadir}/psi-plus/
 
 # Install skins
-%{__tar} xzf %{SOURCE3} -C $RPM_BUILD_ROOT%{_datadir}/psi/
+%{__tar} xzf %{SOURCE3} -C $RPM_BUILD_ROOT%{_datadir}/psi-plus/
 
 # Menu
-desktop-file-install --vendor fedora \
-       --dir $RPM_BUILD_ROOT%{_datadir}/applications\
-       --delete-original\
-       $RPM_BUILD_ROOT%{_datadir}/applications/psi.desktop
+desktop-file-install \
+       --dir $RPM_BUILD_ROOT%{_datadir}/applications \
+       --delete-original \
+       $RPM_BUILD_ROOT%{_datadir}/applications/psi-plus.desktop
 
-mkdir -p $RPM_BUILD_ROOT%{_libdir}/psi/plugins
+mkdir -p $RPM_BUILD_ROOT%{_libdir}/psi-plus/plugins
 
-cd src/plugins/generic
+pushd src/plugins/generic
 
 for dir in %{allplugins}
 do
-  cp $dir/*.so $RPM_BUILD_ROOT%{_libdir}/psi/plugins/
+  cp $dir/*.so $RPM_BUILD_ROOT%{_libdir}/psi-plus/plugins/
 done
+popd
 
+# Install psimedia
+cd ../psi-plus-psimedia
+install -D -m 755 gstprovider/libgstprovider.so $RPM_BUILD_ROOT%{_libdir}/psi-plus/plugins/libgstprovider.so
+install -D -m 755 demo/demo $RPM_BUILD_ROOT%{_bindir}/psi-plus-psimedia
+desktop-file-install --dir=${RPM_BUILD_ROOT}%{_datadir}/applications %{SOURCE5}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -179,30 +216,47 @@ fi
 %files
 %defattr(-,root,root,-)
 %doc README COPYING
-%{_bindir}/psi
-%{_datadir}/applications/*.desktop
-%{_datadir}/icons/hicolor/*/apps/psi.png
-%{_datadir}/psi/
-%exclude %{_datadir}/psi/iconsets/
-%{_datadir}/psi/iconsets/*/default/
-%exclude %{_datadir}/psi/skins/
+%{_bindir}/psi-plus
+%{_datadir}/applications/psi-plus.desktop
+%{_datadir}/icons/hicolor/*/apps/psi-plus.png
+%{_datadir}/psi-plus/
+%exclude %{_datadir}/psi-plus/iconsets/
+%{_datadir}/psi-plus/iconsets/*/default/
+%exclude %{_datadir}/psi-plus/skins/
 
 %files plugins
 %defattr(-,root,root,-)
-%{_libdir}/psi/plugins/
-%exclude %{_libdir}/psi/plugins/libskinsplugin.so
+%{_libdir}/psi-plus/plugins/
+%exclude %{_libdir}/psi-plus/plugins/libskinsplugin.so
+%exclude %{_libdir}/psi-plus/plugins/libgstprovider.so
 
 %files icons
 %defattr(-,root,root,-)
-%{_datadir}/psi/iconsets/
-%exclude %{_datadir}/psi/iconsets/*/default/
+%{_datadir}/psi-plus/iconsets/
+%exclude %{_datadir}/psi-plus/iconsets/*/default/
 
 %files skins
 %defattr(-,root,root,-)
-%{_libdir}/psi/plugins/libskinsplugin.so
-%{_datadir}/psi/skins/
+%{_libdir}/psi-plus/plugins/libskinsplugin.so
+%{_datadir}/psi-plus/skins/
+
+%files psimedia
+%defattr(-,root,root,-)
+%{_bindir}/psi-plus-psimedia
+%{_libdir}/psi-plus/plugins/libgstprovider.so
+%{_datadir}/applications/psi-plus-psimedia.desktop
 
 %changelog
+* Wed Jan 19 2011 Ivan Romanov <drizt@land.ru> - 0.15-0.17.20110119svn3559
+- all 'psi' dirs and files renamed to 'psi-plus'
+- removed conflicts tag
+- added psimedia sub-package
+- update to r3559
+
+* Sun Jan 09 2011 Ivan Romanov <drizt@land.ru> - 0.15-0.16.20110110svn3465
+- some a bit fixes
+- update to r3465
+
 * Sat Dec 18 2010 Ivan Romanov <drizt@land.ru> - 0.15-0.15.20101218svn3411
 - update to r3411
 
