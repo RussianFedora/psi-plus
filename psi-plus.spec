@@ -34,12 +34,12 @@ BuildRequires:  openssl-devel
 BuildRequires:  qt-webkit-devel
 %endif
 
-Requires(hint):     sox
-Requires(hint):     gnupg
+Requires:     sox
+Requires:     gnupg
 # Required for SSL/TLS connections
-Requires(hint):     qca-ossl
+Requires:     qca-ossl
 # Required for GnuPG encryption
-Requires(hint):     qca-gnupg
+Requires:     qca-gnupg
 
 %description
 Psi+ - Psi IM Mod by psi-dev@conference.jabber.ru
