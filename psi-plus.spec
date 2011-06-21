@@ -1,4 +1,4 @@
-%define rev 20110530svn3954
+%define rev 20110621svn4080
 %define genericplugins attentionplugin autoreplyplugin birthdayreminderplugin captchaformsplugin chessplugin cleanerplugin clientswitcherplugin conferenceloggerplugin contentdownloaderplugin extendedmenuplugin extendedoptionsplugin gmailserviceplugin gomokugameplugin historykeeperplugin icqdieplugin imageplugin jabberdiskplugin juickplugin pepchangenotifyplugin qipxstatusesplugin screenshotplugin skinsplugin stopspamplugin storagenotesplugin translateplugin watcherplugin
 
 %define unixplugins videostatusplugin
@@ -6,23 +6,34 @@
 Summary:        Jabber client based on Qt
 Name:           psi-plus
 Version:        0.15
-Release:        0.18.%{rev}%{?dist}
+Release:        0.19.%{rev}%{?dist}
 Epoch:          1
-Packager:       Ivan Romanov <drizt@land.ru>
 
 URL:            http://code.google.com/p/psi-dev/
-License:        GPLv2+1
+# GPLv2+ - core of Psi+
+# LGPLv2.1+ - iris library, Psi+ widgets, qca, psimedia, several Psi+ tools
+# BSD - botantools for qca library
+# MIT/X11 - JDNS for iris library
+# zlib/libpng - UnZip 0.15 additionnal library
+License:        GPLv2+ and LGPLv2.1+ and BSD and MIT/X11 and zlib/libpng
 Group:          Applications/Internet
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-
-Source0:        http://koji.russianfedora.ru/storage/psi-plus/%{name}-%{version}-20110530svn3954.tar.bz2
+# Sources is latest snapshot from git://git.psi-im.org/psi.git with applyed all worked patches from psi-dev team.
+# Sources also include plugins. There isn't development files therefore plugin interface very volitele.
+# So i can't split plugins to separate package. I need to maintain it together.
+Source0:        http://koji.russianfedora.ru/storage/psi-plus/%{name}-%{version}-20110621svn4080.tar.bz2
+# Iconsets from https://psi-dev.googlecode.com/svn/trunk/iconsets/. Origin unknown.
 Source1:        iconsets.tar.bz2
+# Russian translation from http://code.google.com/p/psi-ru/
 Source2:        language_ru.tar.bz2
+# Iconsets from https://psi-dev.googlecode.com/svn/trunk/skins/. Origin unknown.
 Source3:        skins.tar.bz2
+# Iconsets from https://psi-dev.googlecode.com/svn/trunk/themes/. Origin unknown.
 Source4:        themes.tar.bz2
 
 BuildRequires:  qt-devel
 BuildRequires:  zlib-devel
+BuildRequires:  desktop-file-utils
 BuildRequires:  qca2-devel
 BuildRequires:  glib2-devel
 BuildRequires:  qconf >= 1.4-2
@@ -43,8 +54,9 @@ Psi+ - Psi IM Mod by psi-dev@conference.jabber.ru
 
 %package        plugins
 Summary:        Plugins pack for Psi+
-Group: Applications/Internet
-Requires: %{name} = %{epoch}:%{version}-%{release}
+License:        GPLv2+
+Group:          Applications/Internet
+Requires:       %{name} = %{epoch}:%{version}-%{release}
 
 
 %description    plugins
@@ -149,8 +161,8 @@ D-Bus.
 
 %package        icons
 Summary:        Iconsets for Psi+
-Group: Applications/Internet
-Requires: %{name} = %{epoch}:%{version}-%{release}
+Group:          Applications/Internet
+Requires:       %{name} = %{epoch}:%{version}-%{release}
 
 
 %description    icons
@@ -205,7 +217,7 @@ qconf-qt4
 
 make %{?_smp_mflags}
 
-lrelease-qt4 psi_ru.ts
+lrelease-qt4 *.ts
 
 pushd src/plugins
 
@@ -233,13 +245,11 @@ done
 popd
 
 %install
-rm -rf $RPM_BUILD_ROOT
-
-export INSTALL_ROOT=$RPM_BUILD_ROOT
-make install
+# Qt don't understand DESTDIR. So I need to use INSTALL_ROOT instead.
+INSTALL_ROOT=$RPM_BUILD_ROOT make install
 
 # Install russian
-cp psi_ru.qm $RPM_BUILD_ROOT%{_datadir}/psi-plus/
+cp *.qm $RPM_BUILD_ROOT%{_datadir}/psi-plus/
 
 # Install iconsets
 %{__tar} xjf %{SOURCE1} -C $RPM_BUILD_ROOT%{_datadir}/psi-plus/
@@ -249,6 +259,10 @@ cp psi_ru.qm $RPM_BUILD_ROOT%{_datadir}/psi-plus/
 
 # Install themes
 %{__tar} xjf %{SOURCE4} -C $RPM_BUILD_ROOT%{_datadir}/psi-plus/
+
+# Menu file is being installed when make install
+# so it need only to check this allready installed file
+desktop-file-validate $RPM_BUILD_ROOT%{_datadir}/applications/psi-plus.desktop
 
 mkdir -p $RPM_BUILD_ROOT%{_libdir}/psi-plus/plugins
 
@@ -267,6 +281,7 @@ done
 
 pushd src/plugins
 
+# Install all plugins
 for dir in ${allplugins}
 do
   cp $dir/*.so $RPM_BUILD_ROOT%{_libdir}/psi-plus/plugins/
@@ -296,7 +311,7 @@ fi
 %dir %{_datadir}/psi-plus/
 %{_datadir}/psi-plus/certs/
 %{_datadir}/psi-plus/sound/
-%{_datadir}/psi-plus/psi_ru.qm
+%{_datadir}/psi-plus/*.qm
 %{_datadir}/psi-plus/iconsets/*/default/
 %{_datadir}/psi-plus/themes/chatview/adium/
 %{_datadir}/psi-plus/themes/chatview/util.js
@@ -328,6 +343,14 @@ fi
 %exclude %{_datadir}/psi-plus/themes/chatview/psi/classic/
 
 %changelog
+* Tue Jun 21 2011 Ivan Romanov <drizt@land.ru> - 0.15-0.19.20110621svn4080
+- update to r4080
+- explaining for licenses
+- compile all language files instead of only psi_ru.ts
+- dropped useless rm from install stage
+- dropped packager
+- added checking of desktop file
+
 * Mon May 30 2011 Ivan Romanov <drizt@land.ru> - 0.15-0.18.20110530svn3954
 - update to r3954
 - now will be used only .bz2 archives insted .gz
