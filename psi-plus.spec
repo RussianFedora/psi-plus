@@ -1,4 +1,4 @@
-%define rev 20110621svn4080
+%define rev 20110919git5117
 %define genericplugins attentionplugin autoreplyplugin birthdayreminderplugin captchaformsplugin chessplugin cleanerplugin clientswitcherplugin conferenceloggerplugin contentdownloaderplugin extendedmenuplugin extendedoptionsplugin gmailserviceplugin gomokugameplugin historykeeperplugin icqdieplugin imageplugin jabberdiskplugin juickplugin pepchangenotifyplugin qipxstatusesplugin screenshotplugin skinsplugin stopspamplugin storagenotesplugin translateplugin watcherplugin
 
 %define unixplugins videostatusplugin
@@ -6,7 +6,7 @@
 Summary:        Jabber client based on Qt
 Name:           psi-plus
 Version:        0.15
-Release:        0.19.%{rev}%{?dist}
+Release:        0.20.%{rev}%{?dist}.R
 Epoch:          1
 
 URL:            http://code.google.com/p/psi-dev/
@@ -17,19 +17,14 @@ URL:            http://code.google.com/p/psi-dev/
 # zlib/libpng - UnZip 0.15 additionnal library
 License:        GPLv2+ and LGPLv2.1+ and BSD and MIT/X11 and zlib/libpng
 Group:          Applications/Internet
-BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 # Sources is latest snapshot from git://git.psi-im.org/psi.git with applyed all worked patches from psi-dev team.
 # Sources also include plugins. There isn't development files therefore plugin interface very volitele.
 # So i can't split plugins to separate package. I need to maintain it together.
-Source0:        http://koji.russianfedora.ru/storage/psi-plus/%{name}-%{version}-20110621svn4080.tar.bz2
-# Iconsets from https://psi-dev.googlecode.com/svn/trunk/iconsets/. Origin unknown.
-Source1:        iconsets.tar.bz2
-# Russian translation from http://code.google.com/p/psi-ru/
-Source2:        language_ru.tar.bz2
-# Iconsets from https://psi-dev.googlecode.com/svn/trunk/skins/. Origin unknown.
-Source3:        skins.tar.bz2
-# Iconsets from https://psi-dev.googlecode.com/svn/trunk/themes/. Origin unknown.
-Source4:        themes.tar.bz2
+Source0:        http://koji.russianfedora.ru/storage/psi-plus/%{name}-%{version}-20110919git5117.tar.bz2
+# Russian translation from  https://github.com/Nikoli/psi-plus-ru
+Source1:        language_ru.tar.bz2
+# I use this script to make tarball with Psi+ sources
+Source2:        generate-tarball.sh
 
 BuildRequires:  qt-devel
 BuildRequires:  zlib-devel
@@ -159,47 +154,16 @@ This plugin is designed to set the custom status when you see the
 video in selected video player. Communication with players made by
 D-Bus.
 
-%package        icons
-Summary:        Iconsets for Psi+
-Group:          Applications/Internet
-Requires:       %{name} = %{epoch}:%{version}-%{release}
-
-
-%description    icons
-Psi+ - Psi IM Mod by psi-dev@conference.jabber.ru
-
-Iconsets for Psi+
-
-%package        skins
-Summary:        Iconsets for Psi+
-Group:          Applications/Internet
-Requires:       %{name} = %{epoch}:%{version}-%{release}
-
-
-%description    skins
-Psi+ - Psi IM Mod by psi-dev@conference.jabber.ru
-
 Skins Plugin and skins for Psi+
 
 Skins Plugin
 This plugin is designed to create, store and apply skins to Psi+.
 
-%package        themes
-Summary:        Themes for Psi+
-Group:          Applications/Internet
-Requires:       %{name} = %{epoch}:%{version}-%{release}
-
-%description    themes
-Psi+ - Psi IM Mod by psi-dev@conference.jabber.ru
-
-Contents themes for Psi+. Now only one theme. It is Lunna Cat.
-Thank majik for greatest work.
-
 %prep
 %setup -q -n %{name}-%{version}-%{rev}
 
 # Untar russian language
-%{__tar} xjf %{SOURCE2} -C .
+%{__tar} xjf %{SOURCE1} -C .
 
 %build
 unset QTDIR
@@ -248,17 +212,12 @@ popd
 # Qt don't understand DESTDIR. So I need to use INSTALL_ROOT instead.
 INSTALL_ROOT=$RPM_BUILD_ROOT make install
 
+# README and COPYING must be holds in doc dir. See %doc tag in %files
+rm $RPM_BUILD_ROOT%{_datadir}/psi-plus/README
+rm $RPM_BUILD_ROOT%{_datadir}/psi-plus/COPYING
+
 # Install russian
 cp *.qm $RPM_BUILD_ROOT%{_datadir}/psi-plus/
-
-# Install iconsets
-%{__tar} xjf %{SOURCE1} -C $RPM_BUILD_ROOT%{_datadir}/psi-plus/
-
-# Install skins
-%{__tar} xjf %{SOURCE3} -C $RPM_BUILD_ROOT%{_datadir}/psi-plus/
-
-# Install themes
-%{__tar} xjf %{SOURCE4} -C $RPM_BUILD_ROOT%{_datadir}/psi-plus/
 
 # Menu file is being installed when make install
 # so it need only to check this allready installed file
@@ -301,7 +260,6 @@ if [ -x %{_bindir}/gtk-update-icon-cache ]; then
     %{_bindir}/gtk-update-icon-cache --quiet %{_datadir}/icons/hicolor || :
 fi
 
-
 %files
 %defattr(-,root,root,-)
 %doc README COPYING
@@ -309,40 +267,23 @@ fi
 %{_datadir}/applications/psi-plus.desktop
 %{_datadir}/icons/hicolor/*/apps/psi-plus.png
 %dir %{_datadir}/psi-plus/
-%{_datadir}/psi-plus/certs/
-%{_datadir}/psi-plus/sound/
-%{_datadir}/psi-plus/*.qm
-%{_datadir}/psi-plus/iconsets/*/default/
-%{_datadir}/psi-plus/themes/chatview/adium/
-%{_datadir}/psi-plus/themes/chatview/util.js
-%{_datadir}/psi-plus/themes/chatview/psi/classic/
-%{_datadir}/psi-plus/themes/chatview/psi/adapter.js
-%{_datadir}/psi-plus/README
-%{_datadir}/psi-plus/COPYING
+%{_datadir}/psi-plus/
 %dir %{_libdir}/psi-plus/
 
 %files plugins
 %defattr(-,root,root,-)
 %{_libdir}/psi-plus/plugins/
-%exclude %{_libdir}/psi-plus/plugins/libskinsplugin.so
-
-%files icons
-%defattr(-,root,root,-)
-%{_datadir}/psi-plus/iconsets/
-%exclude %{_datadir}/psi-plus/iconsets/*/default/
-
-%files skins
-%defattr(-,root,root,-)
-%{_libdir}/psi-plus/plugins/libskinsplugin.so
-%{_datadir}/psi-plus/skins/
-
-%files themes
-%defattr(-,root,root,-)
-%{_datadir}/psi-plus/themes/chatview/psi/
-%exclude %{_datadir}/psi-plus/themes/chatview/psi/adapter.js
-%exclude %{_datadir}/psi-plus/themes/chatview/psi/classic/
 
 %changelog
+* Mon Sep 19 2011 Ivan Romanov <drizt@land.ru> - 0.15-0.20.20110919git5117
+- update to r5117
+- dropped buildroot tag
+- separated iconsets, skins, sounds and themes to standalone packages
+- add generate-tarball scripts to make psi-plus source tarball
+- skins plugin merged with plugins
+- russian translated moved to github
+- dropped README and COPYING from wrong site
+
 * Tue Jun 21 2011 Ivan Romanov <drizt@land.ru> - 0.15-0.19.20110621svn4080
 - update to r4080
 - explaining for licenses
