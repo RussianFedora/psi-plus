@@ -275,7 +275,7 @@ fi
 %{_libdir}/psi-plus/plugins/
 
 %changelog
-* Mon Sep 19 2011 Ivan Romanov <drizt@land.ru> - 0.15-0.20.20110919git5117
+* Mon Sep 19 2011 Ivan Romanov <drizt@land.ru> - 0.15-0.20.20110919git5117.R
 - update to r5117
 - dropped buildroot tag
 - separated iconsets, skins, sounds and themes to standalone packages
