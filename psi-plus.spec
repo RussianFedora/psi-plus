@@ -20,7 +20,7 @@ Group:          Applications/Internet
 # Sources is latest snapshot from git://git.psi-im.org/psi.git with applyed all worked patches from psi-dev team.
 # Sources also include plugins. There isn't development files therefore plugin interface very volitele.
 # So i can't split plugins to separate package. I need to maintain it together.
-Source0:        http://koji.russianfedora.ru/storage/psi-plus/%{name}-%{version}-20110919git5117.tar.bz2
+Source0:        http://download.rfremix.ru/storage/psi-plus/%{name}-%{version}-20110919git5117.tar.bz2
 # Russian translation from  https://github.com/Nikoli/psi-plus-ru
 Source1:        language_ru.tar.bz2
 # I use this script to make tarball with Psi+ sources
@@ -275,7 +275,7 @@ fi
 %{_libdir}/psi-plus/plugins/
 
 %changelog
-* Mon Sep 19 2011 Ivan Romanov <drizt@land.ru> - 0.15-0.20.20110919git5117.R
+* Thu Sep 22 2011 Ivan Romanov <drizt@land.ru> - 0.15-0.20.20110919git5117.R
 - update to r5117
 - dropped buildroot tag
 - separated iconsets, skins, sounds and themes to standalone packages
@@ -283,6 +283,7 @@ fi
 - skins plugin merged with plugins
 - russian translated moved to github
 - dropped README and COPYING from wrong site
+- moved source tarball
 
 * Tue Jun 21 2011 Ivan Romanov <drizt@land.ru> - 0.15-0.19.20110621svn4080
 - update to r4080
