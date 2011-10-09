@@ -1,5 +1,3 @@
-39fb8014e1b856cd160f9fcd92e90cbf  iconsets.tar.bz2
-721e7c48d2861a957e40bfee6cb343da  language_ru.tar.bz2
-361584addb930a187694368222947bc4  psi-plus-0.15-20110621svn4080.tar.bz2
-60d588589337641a27d0cdb303261d3b  skins.tar.bz2
-7bcead0ea07f52da7936ef0a712c82fb  themes.tar.bz2
+b672129c55738ae6a5d462ddf433ab90  psi-plus-0.15-20110919git5117.tar.bz2
+54264077167a02a7b88db7454b422b7c  language_ru.tar.bz2
+320ac1d88729aecda2bb968c6fae5c6e  generate-tarball.sh
