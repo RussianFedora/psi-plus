@@ -6,7 +6,7 @@
 Summary:        Jabber client based on Qt
 Name:           psi-plus
 Version:        0.15
-Release:        0.20.%{rev}%{?dist}.R
+Release:        0.21.%{rev}%{?dist}.R
 Epoch:          1
 
 URL:            http://code.google.com/p/psi-dev/
@@ -175,7 +175,6 @@ qconf-qt4
         --datadir=%{_datadir}      \
         --release                  \
         --no-separate-debug-info   \
-        --enable-webkit            \
         --enable-plugins           \
         --enable-whiteboarding
 
@@ -275,6 +274,9 @@ fi
 %{_libdir}/psi-plus/plugins/
 
 %changelog
+* Fri Nov 18 2011 Ivan Romanov <drizt@land.ru> - 0.15-0.21.20110919git5117.R
+- special for RFRemix 16. workaround to fix the bug 804.
+
 * Sun Oct 09 2011 Ivan Romanov <drizt@land.ru> - 0.15-0.20.20110919git5117.R
 - update to r5117
 - dropped buildroot tag
