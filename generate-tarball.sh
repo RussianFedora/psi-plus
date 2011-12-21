@@ -2,7 +2,7 @@
 
 # Get psi sources
 rm -fr psi
-git clone --depth 1 git://git.psi-im.org/psi.git
+git clone --depth 1 git://github.com/psi-im/psi.git
 pushd psi
 git submodule init
 git submodule update
@@ -22,7 +22,7 @@ popd
 
 # Russian language
 rm -f language_ru.tar.bz2
-git clone --depth 1 git://github.com/Nikoli/psi-plus-ru.git
+git clone --depth 1 git://github.com/ivan101/psi-plus-ru.git
 tar -C psi-plus-ru/ -cjf language_ru.tar.bz2 psi_ru.ts qt/qt_ru.ts 
 
 # Prepare psi-plus folder

@@ -1,12 +1,10 @@
-%define rev 20110919git5117
-%define genericplugins attentionplugin autoreplyplugin birthdayreminderplugin captchaformsplugin chessplugin cleanerplugin clientswitcherplugin conferenceloggerplugin contentdownloaderplugin extendedmenuplugin extendedoptionsplugin gmailserviceplugin gomokugameplugin historykeeperplugin icqdieplugin imageplugin jabberdiskplugin juickplugin pepchangenotifyplugin qipxstatusesplugin screenshotplugin skinsplugin stopspamplugin storagenotesplugin translateplugin watcherplugin
-
-%define unixplugins videostatusplugin
+%define rev 20111220git5157
+%define genericplugins attentionplugin autoreplyplugin birthdayreminderplugin captchaformsplugin chessplugin cleanerplugin clientswitcherplugin conferenceloggerplugin contentdownloaderplugin extendedmenuplugin extendedoptionsplugin gmailserviceplugin gomokugameplugin historykeeperplugin icqdieplugin imageplugin jabberdiskplugin juickplugin pepchangenotifyplugin qipxstatusesplugin screenshotplugin skinsplugin stopspamplugin storagenotesplugin translateplugin watcherplugin videostatusplugin yandexnarodplugin
 
 Summary:        Jabber client based on Qt
 Name:           psi-plus
 Version:        0.15
-Release:        0.21.%{rev}%{?dist}.R
+Release:        0.22.%{rev}%{?dist}.R
 Epoch:          1
 
 URL:            http://code.google.com/p/psi-dev/
@@ -20,7 +18,7 @@ Group:          Applications/Internet
 # Sources is latest snapshot from git://git.psi-im.org/psi.git with applyed all worked patches from psi-dev team.
 # Sources also include plugins. There isn't development files therefore plugin interface very volitele.
 # So i can't split plugins to separate package. I need to maintain it together.
-Source0:        http://download.rfremix.ru/storage/psi-plus/%{name}-%{version}-20110919git5117.tar.bz2
+Source0:        http://download.rfremix.ru/storage/psi-plus/%{name}-%{version}-20111220git5157.tar.bz2
 # Russian translation from  https://github.com/Nikoli/psi-plus-ru
 Source1:        language_ru.tar.bz2
 # I use this script to make tarball with Psi+ sources
@@ -154,10 +152,10 @@ This plugin is designed to set the custom status when you see the
 video in selected video player. Communication with players made by
 D-Bus.
 
-Skins Plugin and skins for Psi+
-
 Skins Plugin
 This plugin is designed to create, store and apply skins to Psi+.
+
+Yandex Narod Plugin
 
 %prep
 %setup -q -n %{name}-%{version}-%{rev}
@@ -175,6 +173,7 @@ qconf-qt4
         --datadir=%{_datadir}      \
         --release                  \
         --no-separate-debug-info   \
+        --enable-webkit            \
         --enable-plugins           \
         --enable-whiteboarding
 
@@ -189,12 +188,6 @@ allplugins=""
 for dir in %{genericplugins}
 do
   allplugins="${allplugins} generic/$dir"
-done
-
-# Make paths for unix plugins
-for dir in %{unixplugins}
-do
-  allplugins="${allplugins} unix/$dir"
 done
 
 # Compile all plugins
@@ -229,12 +222,6 @@ allplugins=""
 for dir in %{genericplugins}
 do
   allplugins="${allplugins} generic/$dir"
-done
-
-# Make paths for unix plugins
-for dir in %{unixplugins}
-do
-  allplugins="${allplugins} unix/$dir"
 done
 
 pushd src/plugins
@@ -274,6 +261,12 @@ fi
 %{_libdir}/psi-plus/plugins/
 
 %changelog
+* Tue Dec 20 2011 Ivan Romanov <drizt@land.ru> - 0.15-0.22.20111220git5157.R
+- reverted Webkit
+- updated to r5157
+- new Yandex Narod plugin
+- Video Status plugin now is generic
+
 * Fri Nov 18 2011 Ivan Romanov <drizt@land.ru> - 0.15-0.21.20110919git5117.R
 - special for RFRemix 16. workaround to fix the bug 804.
 
