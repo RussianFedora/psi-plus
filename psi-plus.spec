@@ -18,7 +18,7 @@ Group:          Applications/Internet
 # Sources is latest snapshot from git://git.psi-im.org/psi.git with applyed all worked patches from psi-dev team.
 # Sources also include plugins. There isn't development files therefore plugin interface very volitele.
 # So i can't split plugins to separate package. I need to maintain it together.
-Source0:        http://download.rfremix.ru/storage/psi-plus/%{name}-%{version}-20111220git5157.tar.bz2
+Source0:        https://github.com/downloads/drizt/psi-plus/%{name}-%{version}-20111220git5157.tar.bz2
 # Russian translation from  https://github.com/Nikoli/psi-plus-ru
 Source1:        language_ru.tar.bz2
 # I use this script to make tarball with Psi+ sources
@@ -261,11 +261,12 @@ fi
 %{_libdir}/psi-plus/plugins/
 
 %changelog
-* Tue Dec 20 2011 Ivan Romanov <drizt@land.ru> - 0.15-0.22.20111220git5157.R
+* Fri Dec 23 2011 Ivan Romanov <drizt@land.ru> - 0.15-0.22.20111220git5157.R
 - reverted Webkit
 - updated to r5157
 - new Yandex Narod plugin
 - Video Status plugin now is generic
+- new place for tarball
 
 * Fri Nov 18 2011 Ivan Romanov <drizt@land.ru> - 0.15-0.21.20110919git5117.R
 - special for RFRemix 16. workaround to fix the bug 804.
