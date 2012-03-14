@@ -1,10 +1,10 @@
-%define rev 20111220git5157
+%define rev 20120314git5253
 %define genericplugins attentionplugin autoreplyplugin birthdayreminderplugin captchaformsplugin chessplugin cleanerplugin clientswitcherplugin conferenceloggerplugin contentdownloaderplugin extendedmenuplugin extendedoptionsplugin gmailserviceplugin gomokugameplugin historykeeperplugin icqdieplugin imageplugin jabberdiskplugin juickplugin pepchangenotifyplugin qipxstatusesplugin screenshotplugin skinsplugin stopspamplugin storagenotesplugin translateplugin watcherplugin videostatusplugin yandexnarodplugin
 
 Summary:        Jabber client based on Qt
 Name:           psi-plus
 Version:        0.15
-Release:        0.22.%{rev}%{?dist}.R
+Release:        0.23.%{rev}%{?dist}.R
 Epoch:          1
 
 URL:            http://code.google.com/p/psi-dev/
@@ -13,18 +13,18 @@ URL:            http://code.google.com/p/psi-dev/
 # BSD - botantools for qca library
 # MIT/X11 - JDNS for iris library
 # zlib/libpng - UnZip 0.15 additionnal library
-License:        GPLv2+ and LGPLv2.1+ and BSD and MIT/X11 and zlib/libpng
+License:        GPLv2+ and LGPLv2+ and BSD and MIT and zlib
 Group:          Applications/Internet
-# Sources is latest snapshot from git://git.psi-im.org/psi.git with applyed all worked patches from psi-dev team.
-# Sources also include plugins. There isn't development files therefore plugin interface very volitele.
+# Sources is latest snapshot from git://github.com/psi-im/psi.git with applyed all worked patches from psi-dev team.
+# Sources also include plugins. There isn't development files therefore plugin interface very unstable.
 # So i can't split plugins to separate package. I need to maintain it together.
-Source0:        https://github.com/downloads/drizt/psi-plus/%{name}-%{version}-20111220git5157.tar.bz2
-# Russian translation from  https://github.com/Nikoli/psi-plus-ru
+Source0:        https://github.com/downloads/drizt/psi-plus/%{name}-%{version}-20120314git5253.tar.bz2
+# Russian translation from  https://github.com/ivan101/psi-plus-ru
 Source1:        language_ru.tar.bz2
 # I use this script to make tarball with Psi+ sources
 Source2:        generate-tarball.sh
 
-BuildRequires:  qt-devel
+BuildRequires:  qt4-devel
 BuildRequires:  zlib-devel
 BuildRequires:  desktop-file-utils
 BuildRequires:  qca2-devel
@@ -33,14 +33,15 @@ BuildRequires:  qconf >= 1.4-2
 BuildRequires:  enchant-devel
 BuildRequires:  libXScrnSaver-devel
 BuildRequires:  openssl-devel
-BuildRequires:  qt-webkit-devel
+BuildRequires:  qt4-webkit-devel
+BuildRequires:  minizip-devel
 
-Requires:       sox
+Requires:       sox%{?_isa}
 Requires:       gnupg
 # Required for SSL/TLS connections
-Requires:       qca-ossl
+Requires:       qca-ossl%{?_isa}
 # Required for GnuPG encryption
-Requires:       qca-gnupg
+Requires:       qca-gnupg%{?_isa}
 
 %description
 Psi+ - Psi IM Mod by psi-dev@conference.jabber.ru
@@ -49,7 +50,7 @@ Psi+ - Psi IM Mod by psi-dev@conference.jabber.ru
 Summary:        Plugins pack for Psi+
 License:        GPLv2+
 Group:          Applications/Internet
-Requires:       %{name} = %{epoch}:%{version}-%{release}
+Requires:       %{name}%{?_isa} = %{epoch}:%{version}-%{release}
 
 
 %description    plugins
@@ -160,6 +161,14 @@ Yandex Narod Plugin
 %prep
 %setup -q -n %{name}-%{version}-%{rev}
 
+# Remove bundled libraries
+rm -fr src/libpsi/tools/zip/minizip
+rm -fr third-party/qca
+
+# Psi+ always uses last iris version. So I need to provide bundled
+# iris to guarantee efficiency of program.
+# rm -fr iris
+
 # Untar russian language
 %{__tar} xjf %{SOURCE1} -C .
 
@@ -175,7 +184,8 @@ qconf-qt4
         --no-separate-debug-info   \
         --enable-webkit            \
         --enable-plugins           \
-        --enable-whiteboarding
+        --enable-whiteboarding     \
+        --disable-bundled-qca
 
 make %{?_smp_mflags}
 
@@ -204,7 +214,7 @@ popd
 # Qt don't understand DESTDIR. So I need to use INSTALL_ROOT instead.
 INSTALL_ROOT=$RPM_BUILD_ROOT make install
 
-# README and COPYING must be holds in doc dir. See %doc tag in %files
+# README and COPYING must be holds in doc dir. See %%doc tag in %%files
 rm $RPM_BUILD_ROOT%{_datadir}/psi-plus/README
 rm $RPM_BUILD_ROOT%{_datadir}/psi-plus/COPYING
 
@@ -261,6 +271,16 @@ fi
 %{_libdir}/psi-plus/plugins/
 
 %changelog
+* Thu Jan 19 2012 Ivan Romanov <drizt@land.ru> - 1:0.15-0.23.20120314git5253.R
+- updated to r5253
+- corrected comment for Source0
+- added %{?_isa} to requires
+- less rpmlint warnings
+- clarified qt version in BuildRequires
+- use system minizip
+- explicity removed bundled qca
+- psi-plus russian translation new home
+
 * Fri Dec 23 2011 Ivan Romanov <drizt@land.ru> - 0.15-0.22.20111220git5157.R
 - reverted Webkit
 - updated to r5157
