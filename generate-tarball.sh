@@ -9,7 +9,7 @@ git submodule update
 popd
 
 # Get psi-dev repositoris
-rm -fr main pugins
+rm -fr main plugins
 git clone git://github.com/psi-plus/main.git
 git clone --depth 1 git://github.com/psi-plus/plugins.git
 
@@ -21,7 +21,7 @@ psiver=0.15-${pkgrev}
 popd
 
 # Russian language
-rm -f language_ru.tar.bz2
+rm -f language_ru.tar.bz2 psi-plus-ru
 git clone --depth 1 git://github.com/ivan101/psi-plus-ru.git
 tar -C psi-plus-ru/ -cjf language_ru.tar.bz2 psi_ru.ts qt/qt_ru.ts 
 
