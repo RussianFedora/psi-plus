@@ -4,7 +4,7 @@
 Summary:        Jabber client based on Qt
 Name:           psi-plus
 Version:        0.15
-Release:        0.23.%{rev}%{?dist}.R
+Release:        0.24.%{rev}%{?dist}
 Epoch:          1
 
 URL:            http://code.google.com/p/psi-dev/
@@ -271,7 +271,10 @@ fi
 %{_libdir}/psi-plus/plugins/
 
 %changelog
-* Thu Jan 19 2012 Ivan Romanov <drizt@land.ru> - 1:0.15-0.23.20120314git5253.R
+* Sat Mar 17 2012 Ivan Romanov <drizt@land.ru> - 1:0.15-0.24.20120314git5253.R
+- %{?dist} allready has R suffix.
+
+* Wed Mar 14 2012 Ivan Romanov <drizt@land.ru> - 1:0.15-0.23.20120314git5253.R
 - updated to r5253
 - corrected comment for Source0
 - added %{?_isa} to requires
