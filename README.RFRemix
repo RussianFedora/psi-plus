@@ -1,0 +1,5 @@
+Название:               Jabber-клиент с широкими возможностями и поддержкой плагинов
+Мейнтэйнер(ы):          Ivan Romanov
+Репозиторий:            free
+Почему не в апстриме:   bundled iris. https://bugzilla.redhat.com/show_bug.cgi?id=709328
+Комментарий:            ---
