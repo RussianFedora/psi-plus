@@ -1,10 +1,11 @@
-%define rev 20120314git5253
-%define genericplugins attentionplugin autoreplyplugin birthdayreminderplugin captchaformsplugin chessplugin cleanerplugin clientswitcherplugin conferenceloggerplugin contentdownloaderplugin extendedmenuplugin extendedoptionsplugin gmailserviceplugin gomokugameplugin historykeeperplugin icqdieplugin imageplugin jabberdiskplugin juickplugin pepchangenotifyplugin qipxstatusesplugin screenshotplugin skinsplugin stopspamplugin storagenotesplugin translateplugin watcherplugin videostatusplugin yandexnarodplugin
+%define rev 20120625git5339
+%define genericplugins attentionplugin autoreplyplugin birthdayreminderplugin captchaformsplugin chessplugin cleanerplugin clientswitcherplugin conferenceloggerplugin contentdownloaderplugin extendedmenuplugin extendedoptionsplugin gmailserviceplugin gomokugameplugin historykeeperplugin icqdieplugin imageplugin jabberdiskplugin juickplugin pepchangenotifyplugin qipxstatusesplugin screenshotplugin skinsplugin stopspamplugin storagenotesplugin translateplugin videostatusplugin watcherplugin yandexnarodplugin
+%define unixplugins gnome3supportplugin
 
 Summary:        Jabber client based on Qt
 Name:           psi-plus
 Version:        0.15
-Release:        0.24.%{rev}%{?dist}
+Release:        0.25.%{rev}%{?dist}
 Epoch:          1
 
 URL:            http://code.google.com/p/psi-dev/
@@ -18,7 +19,7 @@ Group:          Applications/Internet
 # Sources is latest snapshot from git://github.com/psi-im/psi.git with applyed all worked patches from psi-dev team.
 # Sources also include plugins. There isn't development files therefore plugin interface very unstable.
 # So i can't split plugins to separate package. I need to maintain it together.
-Source0:        https://github.com/downloads/drizt/psi-plus/%{name}-%{version}-20120314git5253.tar.bz2
+Source0:        https://github.com/downloads/drizt/psi-plus/%{name}-%{version}-20120625git5339.tar.bz2
 # Russian translation from  https://github.com/ivan101/psi-plus-ru
 Source1:        language_ru.tar.bz2
 # I use this script to make tarball with Psi+ sources
@@ -200,6 +201,12 @@ do
   allplugins="${allplugins} generic/$dir"
 done
 
+# Make paths for unix plugins
+for dir in %{unixplugins}
+do
+  allplugins="${allplugins} unix/$dir"
+done
+
 # Compile all plugins
 for dir in ${allplugins}
 do
@@ -232,6 +239,12 @@ allplugins=""
 for dir in %{genericplugins}
 do
   allplugins="${allplugins} generic/$dir"
+done
+
+# Make paths for unix plugins
+for dir in %{unixplugins}
+do
+  allplugins="${allplugins} unix/$dir"
 done
 
 pushd src/plugins
@@ -271,6 +284,10 @@ fi
 %{_libdir}/psi-plus/plugins/
 
 %changelog
+* Mon Jun 25 2012 Ivan Romanov <drizt@land.ru> - 1:0.15-0.25.20120625git5339.R
+- update to r5339
+- new Gnome3 Support Plugin
+
 * Sat Mar 17 2012 Ivan Romanov <drizt@land.ru> - 1:0.15-0.24.20120314git5253.R
 - %{?dist} allready has R suffix.
 
