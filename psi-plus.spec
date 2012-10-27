@@ -1,11 +1,11 @@
-%define rev 20120625git5339
+%define rev 20121027git21
 %define genericplugins attentionplugin autoreplyplugin birthdayreminderplugin captchaformsplugin chessplugin cleanerplugin clientswitcherplugin conferenceloggerplugin contentdownloaderplugin extendedmenuplugin extendedoptionsplugin gmailserviceplugin gomokugameplugin historykeeperplugin icqdieplugin imageplugin jabberdiskplugin juickplugin pepchangenotifyplugin qipxstatusesplugin screenshotplugin skinsplugin stopspamplugin storagenotesplugin translateplugin videostatusplugin watcherplugin yandexnarodplugin
 %define unixplugins gnome3supportplugin
 
 Summary:        Jabber client based on Qt
 Name:           psi-plus
-Version:        0.15
-Release:        0.25.%{rev}%{?dist}
+Version:        0.16
+Release:        0.1.%{rev}%{?dist}
 Epoch:          1
 
 URL:            http://code.google.com/p/psi-dev/
@@ -19,10 +19,10 @@ Group:          Applications/Internet
 # Sources is latest snapshot from git://github.com/psi-im/psi.git with applyed all worked patches from psi-dev team.
 # Sources also include plugins. There isn't development files therefore plugin interface very unstable.
 # So i can't split plugins to separate package. I need to maintain it together.
-Source0:        https://github.com/downloads/drizt/psi-plus/%{name}-%{version}-20120625git5339.tar.bz2
-# Russian translation from  https://github.com/ivan101/psi-plus-ru
-Source1:        language_ru.tar.bz2
-# I use this script to make tarball with Psi+ sources
+Source0:        https://github.com/downloads/drizt/psi-plus/%{name}-%{version}-20121027git21.tar.bz2
+# Translation from  https://github.com/psi-plus/psi-plus-l10n
+Source1:        psi-plus-l10n.tar.bz2
+# I use this script to make tarballs with Psi+ sources and translations
 Source2:        generate-tarball.sh
 
 BuildRequires:  qt4-devel
@@ -36,6 +36,7 @@ BuildRequires:  libXScrnSaver-devel
 BuildRequires:  openssl-devel
 BuildRequires:  qt4-webkit-devel
 BuildRequires:  minizip-devel
+BuildRequires:  gettext
 
 Requires:       sox%{?_isa}
 Requires:       gnupg
@@ -46,6 +47,15 @@ Requires:       qca-gnupg%{?_isa}
 
 %description
 Psi+ - Psi IM Mod by psi-dev@conference.jabber.ru
+
+%package        i18n
+Summary:        Language packs for Psi
+Group:          Applications/Internet
+Requires:       %{name} = %{epoch}:%{version}-%{release}
+
+%description    i18n
+Psi+ - Psi IM Mod by psi-dev@conference.jabber.ru
+This package adds internationalization to Psi+.
 
 %package        plugins
 Summary:        Plugins pack for Psi+
@@ -164,7 +174,6 @@ Yandex Narod Plugin
 
 # Remove bundled libraries
 rm -fr src/libpsi/tools/zip/minizip
-rm -fr third-party/qca
 
 # Psi+ always uses last iris version. So I need to provide bundled
 # iris to guarantee efficiency of program.
@@ -185,12 +194,13 @@ qconf-qt4
         --no-separate-debug-info   \
         --enable-webkit            \
         --enable-plugins           \
-        --enable-whiteboarding     \
-        --disable-bundled-qca
+        --enable-whiteboarding
 
 make %{?_smp_mflags}
 
+pushd translations
 lrelease-qt4 *.ts
+popd
 
 pushd src/plugins
 
@@ -225,8 +235,9 @@ INSTALL_ROOT=$RPM_BUILD_ROOT make install
 rm $RPM_BUILD_ROOT%{_datadir}/psi-plus/README
 rm $RPM_BUILD_ROOT%{_datadir}/psi-plus/COPYING
 
-# Install russian
-cp *.qm $RPM_BUILD_ROOT%{_datadir}/psi-plus/
+# Install languages
+cp translations/*.qm $RPM_BUILD_ROOT%{_datadir}/%{name}
+%find_lang psi --with-qt
 
 # Menu file is being installed when make install
 # so it need only to check this allready installed file
@@ -279,11 +290,21 @@ fi
 %{_datadir}/psi-plus/
 %dir %{_libdir}/psi-plus/
 
+%files i18n -f psi.lang
+%defattr(-,root,root,-)
+
 %files plugins
 %defattr(-,root,root,-)
 %{_libdir}/psi-plus/plugins/
 
 %changelog
+* Sat Oct 27 2012 Ivan Romanov <drizt@land.ru> - 1:0.16-0.1.20121027git21%{?dist}
+- updated to version 0.16 rev 21
+- added many translations
+- new i18n subpackage
+- improved generate-tarball script
+- bundled qca was dropped from upstream
+
 * Mon Jun 25 2012 Ivan Romanov <drizt@land.ru> - 1:0.15-0.25.20120625git5339.R
 - update to r5339
 - new Gnome3 Support Plugin
