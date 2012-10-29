@@ -1,11 +1,11 @@
-%define rev 20121027git21
+%define rev 20121029git29
 %define genericplugins attentionplugin autoreplyplugin birthdayreminderplugin captchaformsplugin chessplugin cleanerplugin clientswitcherplugin conferenceloggerplugin contentdownloaderplugin extendedmenuplugin extendedoptionsplugin gmailserviceplugin gomokugameplugin historykeeperplugin icqdieplugin imageplugin jabberdiskplugin juickplugin pepchangenotifyplugin qipxstatusesplugin screenshotplugin skinsplugin stopspamplugin storagenotesplugin translateplugin videostatusplugin watcherplugin yandexnarodplugin
 %define unixplugins gnome3supportplugin
 
 Summary:        Jabber client based on Qt
 Name:           psi-plus
 Version:        0.16
-Release:        0.1.%{rev}%{?dist}
+Release:        0.2.%{rev}%{?dist}
 Epoch:          1
 
 URL:            http://code.google.com/p/psi-dev/
@@ -19,7 +19,7 @@ Group:          Applications/Internet
 # Sources is latest snapshot from git://github.com/psi-im/psi.git with applyed all worked patches from psi-dev team.
 # Sources also include plugins. There isn't development files therefore plugin interface very unstable.
 # So i can't split plugins to separate package. I need to maintain it together.
-Source0:        https://github.com/downloads/drizt/psi-plus/%{name}-%{version}-20121027git21.tar.bz2
+Source0:        https://github.com/downloads/drizt/psi-plus/%{name}-%{version}-20121029git29.tar.bz2
 # Translation from  https://github.com/psi-plus/psi-plus-l10n
 Source1:        psi-plus-l10n.tar.bz2
 # I use this script to make tarballs with Psi+ sources and translations
@@ -281,7 +281,6 @@ if [ -x %{_bindir}/gtk-update-icon-cache ]; then
 fi
 
 %files
-%defattr(-,root,root,-)
 %doc README COPYING
 %{_bindir}/psi-plus
 %{_datadir}/applications/psi-plus.desktop
@@ -291,14 +290,16 @@ fi
 %dir %{_libdir}/psi-plus/
 
 %files i18n -f psi.lang
-%defattr(-,root,root,-)
 
 %files plugins
-%defattr(-,root,root,-)
 %{_libdir}/psi-plus/plugins/
 
 %changelog
-* Sat Oct 27 2012 Ivan Romanov <drizt@land.ru> - 1:0.16-0.1.20121027git21%{?dist}
+* Mon Oct 29 2012 Ivan Romanov <drizt@land.ru> - 1:0.16-0.2.20121029git29.R
+- updated to r29
+- dropped %%defattr
+
+* Sat Oct 27 2012 Ivan Romanov <drizt@land.ru> - 1:0.16-0.1.20121027git21.R
 - updated to version 0.16 rev 21
 - added many translations
 - new i18n subpackage
