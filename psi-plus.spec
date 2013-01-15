@@ -1,11 +1,12 @@
-%define rev 20121029git29
+%define rev 20130115git51
 %define genericplugins attentionplugin autoreplyplugin birthdayreminderplugin captchaformsplugin chessplugin cleanerplugin clientswitcherplugin conferenceloggerplugin contentdownloaderplugin extendedmenuplugin extendedoptionsplugin gmailserviceplugin gomokugameplugin historykeeperplugin icqdieplugin imageplugin jabberdiskplugin juickplugin pepchangenotifyplugin qipxstatusesplugin screenshotplugin skinsplugin stopspamplugin storagenotesplugin translateplugin videostatusplugin watcherplugin yandexnarodplugin
 %define unixplugins gnome3supportplugin
+%define devplugins pstoplugin otrplugin
 
 Summary:        Jabber client based on Qt
 Name:           psi-plus
 Version:        0.16
-Release:        0.2.%{rev}%{?dist}
+Release:        0.3.%{rev}%{?dist}
 Epoch:          1
 
 URL:            http://code.google.com/p/psi-dev/
@@ -19,7 +20,7 @@ Group:          Applications/Internet
 # Sources is latest snapshot from git://github.com/psi-im/psi.git with applyed all worked patches from psi-dev team.
 # Sources also include plugins. There isn't development files therefore plugin interface very unstable.
 # So i can't split plugins to separate package. I need to maintain it together.
-Source0:        https://github.com/downloads/drizt/psi-plus/%{name}-%{version}-20121029git29.tar.bz2
+Source0:        https://github.com/downloads/drizt/psi-plus/%{name}-%{version}-20130115git51.tar.bz2
 # Translation from  https://github.com/psi-plus/psi-plus-l10n
 Source1:        psi-plus-l10n.tar.bz2
 # I use this script to make tarballs with Psi+ sources and translations
@@ -169,6 +170,16 @@ This plugin is designed to create, store and apply skins to Psi+.
 
 Yandex Narod Plugin
 
+Off-the-Record Messaging Plugin
+a cryptographic protocol that provides strong encryption for instant
+messaging conversations. OTR uses a combination of the AES
+symmetric-key algorithm, the Diffie–Hellman key exchange, and the SHA-1
+hash function. In addition to authentication and encryption, OTR
+provides perfect forward secrecy and malleable encryption.
+
+PSTO Plugin
+Instant bloging service.
+
 %prep
 %setup -q -n %{name}-%{version}-%{rev}
 
@@ -217,6 +228,12 @@ do
   allplugins="${allplugins} unix/$dir"
 done
 
+# Make paths for dev plugins
+for dir in %{devplugins}
+do
+  allplugins="${allplugins} dev/$dir"
+done
+
 # Compile all plugins
 for dir in ${allplugins}
 do
@@ -258,6 +275,12 @@ do
   allplugins="${allplugins} unix/$dir"
 done
 
+# Make paths for dev plugins
+for dir in %{devplugins}
+do
+  allplugins="${allplugins} dev/$dir"
+done
+
 pushd src/plugins
 
 # Install all plugins
@@ -295,6 +318,10 @@ fi
 %{_libdir}/psi-plus/plugins/
 
 %changelog
+* Tue Jan 15 2013 Ivan Romanov <drizt@land.ru> - 1:0.16-0.3.20130115git51.R
+- updated to r51
+- added devel plugins. psto and otr.
+
 * Mon Oct 29 2012 Ivan Romanov <drizt@land.ru> - 1:0.16-0.2.20121029git29.R
 - updated to r29
 - dropped %%defattr

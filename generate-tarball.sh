@@ -39,7 +39,7 @@ cp -r plugins/* psi-plus-${psiver}/src/plugins
 rm -fr plugins
 
 # Apply patches
-cat main/patches/*.diff | patch --no-backup-if-mismatch -d psi-plus-${psiver} -p1
+cat main/patches/*.diff | patch -s --no-backup-if-mismatch -d psi-plus-${psiver} -p1
 cp -r main/iconsets/* psi-plus-${psiver}/iconsets
 
 rm -fr main
