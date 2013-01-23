@@ -21,9 +21,9 @@ Group:          Applications/Internet
 # Sources is latest snapshot from git://github.com/psi-im/psi.git with applyed all worked patches from psi-dev team.
 # Sources also include plugins. There isn't development files therefore plugin interface very unstable.
 # So i can't split plugins to separate package. I need to maintain it together.
-Source0:        https://files.psi-plus.com/sources/%{name}-%{version}-20130123git61.tar.bz2
+Source0:        http://files.psi-plus.com/sources/%{name}-%{version}-20130123git61.tar.bz2
 # Translation from  https://github.com/psi-plus/psi-plus-l10n
-Source1:        https://files.psi-plus.com/sources/psi-plus-l10n-b1089e6.tar.bz2
+Source1:        http://files.psi-plus.com/sources/psi-plus-l10n-b1089e6.tar.bz2
 # I use this script to make tarballs with Psi+ sources and translations
 Source2:        generate-tarball.sh
 
