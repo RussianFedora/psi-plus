@@ -54,6 +54,7 @@ Psi+ - Psi IM Mod by psi-dev@conference.jabber.ru
 Summary:        Language packs for Psi
 Group:          Applications/Internet
 Requires:       %{name} = %{epoch}:%{version}-%{release}
+BuildArch:      noarch
 
 %description    i18n
 Psi+ - Psi IM Mod by psi-dev@conference.jabber.ru
@@ -314,6 +315,7 @@ fi
 %{_datadir}/icons/hicolor/*/apps/psi-plus.png
 %dir %{_datadir}/psi-plus/
 %{_datadir}/psi-plus/
+%exclude %{_datadir}/psi-plus/*.qm
 %dir %{_libdir}/psi-plus/
 
 %files i18n -f psi.lang
@@ -322,10 +324,11 @@ fi
 %{_libdir}/psi-plus/plugins/
 
 %changelog
-* Wed Jan 23 2013 Ivan Romanov <drizt@land.ru> - 1:0.16-0.3.20130123git61%{?dist}
+* Wed Jan 23 2013 Ivan Romanov <drizt@land.ru> - 1:0.16-0.3.20130123git61.R
 - updated to r61
 - added devel plugins. psto and otr.
 - uses url for l10n tarball instead of local one
+- i18n has no arch
 
 * Mon Oct 29 2012 Ivan Romanov <drizt@land.ru> - 1:0.16-0.2.20121029git29.R
 - updated to r29
