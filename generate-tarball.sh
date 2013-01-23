@@ -24,7 +24,9 @@ popd
 rm -fr psi-plus-l10n
 git clone --depth 1 git://github.com/psi-plus/psi-plus-l10n.git
 pushd psi-plus-l10n
-tar --exclude='.*' -cjf ../psi-plus-l10n.tar.bz2 translations
+rev_l10n=$(git rev-parse --short HEAD)
+echo
+tar --exclude='.*' -cjf ../psi-plus-l10n-${rev_l10n}.tar.bz2 translations
 popd
 rm -fr psi-plus-l10n
 

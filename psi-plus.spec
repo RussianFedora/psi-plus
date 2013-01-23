@@ -1,5 +1,6 @@
-%define rev 20130115git51
-%define genericplugins attentionplugin autoreplyplugin birthdayreminderplugin captchaformsplugin chessplugin cleanerplugin clientswitcherplugin conferenceloggerplugin contentdownloaderplugin extendedmenuplugin extendedoptionsplugin gmailserviceplugin gomokugameplugin historykeeperplugin icqdieplugin imageplugin jabberdiskplugin juickplugin pepchangenotifyplugin qipxstatusesplugin screenshotplugin skinsplugin stopspamplugin storagenotesplugin translateplugin videostatusplugin watcherplugin yandexnarodplugin
+%define rev 20130123git61
+%define rev_l10n b1089e6
+%define genericplugins attentionplugin autoreplyplugin birthdayreminderplugin captchaformsplugin chessplugin cleanerplugin clientswitcherplugin conferenceloggerplugin contentdownloaderplugin extendedmenuplugin extendedoptionsplugin gmailserviceplugin gomokugameplugin historykeeperplugin icqdieplugin imageplugin jabberdiskplugin juickplugin pepchangenotifyplugin qipxstatusesplugin screenshotplugin skinsplugin stopspamplugin storagenotesplugin translateplugin videostatusplugin watcherplugin yandexnarodplugin gnupgplugin
 %define unixplugins gnome3supportplugin
 %define devplugins pstoplugin otrplugin
 
@@ -20,9 +21,9 @@ Group:          Applications/Internet
 # Sources is latest snapshot from git://github.com/psi-im/psi.git with applyed all worked patches from psi-dev team.
 # Sources also include plugins. There isn't development files therefore plugin interface very unstable.
 # So i can't split plugins to separate package. I need to maintain it together.
-Source0:        https://github.com/downloads/drizt/psi-plus/%{name}-%{version}-20130115git51.tar.bz2
+Source0:        https://files.psi-plus.com/sources/%{name}-%{version}-20130123git61.tar.bz2
 # Translation from  https://github.com/psi-plus/psi-plus-l10n
-Source1:        psi-plus-l10n.tar.bz2
+Source1:        https://files.psi-plus.com/sources/psi-plus-l10n-b1089e6.tar.bz2
 # I use this script to make tarballs with Psi+ sources and translations
 Source2:        generate-tarball.sh
 
@@ -68,117 +69,120 @@ Requires:       %{name}%{?_isa} = %{epoch}:%{version}-%{release}
 %description    plugins
 Psi+ - Psi IM Mod by psi-dev@conference.jabber.ru
 
-Attention Plugin
+ * Attention Plugin
 This plugin is designed to send and receive special messages such as
 Attentions.
 
-Autoreply Plugin
+ * Autoreply Plugin
 This plugin acts as an auto-answering machine.
 
-Birthday Reminder Plugin
+ * Birthday Reminder Plugin
 This plugin is designed to show reminders of upcoming birthdays.
 
-Captcha Forms Plugin
+ * Captcha Forms Plugin
 This plugin is designed to pass of captcha directly from the Psi+.
 
-Chess Plugin
+ * Chess Plugin
 This plugin allows you to play chess with your friends.
 The plugin is compatible with a similar plugin for Tkabber.
 
-Cleaner Plugin
+ * Cleaner Plugin
 This plugin is designed to clear the avatar cache, saved local copies
 of vCards and history logs.
 
-Client Switcher Plugin
+ * Client Switcher Plugin
 This plugin is intended to spoof version of the Jabber client, the
 name and type of operating system. It is possible to manually specify
 the version of the client and the operating system or choose from a
 predefined list.
 
-Conference Logger Plugin
+ * Conference Logger Plugin
 This plugin is designed to save conference logs in which the Psi+
 user sits.
 
-Content Downloader Plugin
+ * Content Downloader Plugin
 This plugin can currently be used to download and install roster
 iconsets and emoticons.
 
-Extended Menu Plugin
+ * Extended Menu Plugin
 This plugin adds roster submenu 'Extended Actions' to contact's
 context menu. At the moment we have the following items: 'Copy JID',
 'Copy the nickname', 'Copy the status message' and 'Ping'.
 
-Extended Options Plugin
+ * Extended Options Plugin
 This plugin is designed to allow easy configuration of some advanced
 options in Psi+. This plugin gives you access to advanced application
 options, which do not have a graphical user interface.
 
-Gmail Service Plugin
+ * Gmail Service Plugin
 Shows notifications of new messages in your Gmailbox.
 
-History Keeper Plugin
+ * History Keeper Plugin
 This plugin is designed to remove the history of selected contacts
 when the Psi+ is closed.
 
-ICQ Must Die Plugin
+ * ICQ Must Die Plugin
 This plugin is designed to help you transfer as many contacts as
 possible from ICQ to Jabber.
 
-Image Plugin
+ * Image Plugin
 This plugin is designed to send images to roster contacts.
 
-Juick Plugin
+ * Juick Plugin
 This plugin is designed to work efficiently and comfortably with the
 Juick microblogging service.
 
-PEP Change Notify Plugin
+ * PEP Change Notify Plugin
 The plugin is designed to display popup notifications on change of
 moods, activities and tunes at the contacts of the roster. In the
 settings you can choose which ones to include notification of events,
 specify the time within which a notice will appear, as well as play a
 sound specify.
 
-Qip X-statuses Plugin
+ * Qip X-statuses Plugin
 This plugin is designed to display X-statuses of contacts using the
 QIP Infium jabber client.
 
-Screenshot Plugin
+ * Screenshot Plugin
 This plugin allows you to make a snapshot (screenshot) of the screen,
 edit the visible aria to make a screenshot and save the image to a
 local drive or upload to HTTP/FTP server.
 
-Stop Spam Plugin
+ * Stop Spam Plugin
 This plugin is designed to block spam messages and other unwanted
 information from Psi+ users.
 
-Storage Notes Plugin
+ * Storage Notes Plugin
 This plugin is an implementation of XEP-0049: Private XML Storage.
 The plugin is fully compatible with notes saved using Miranda IM.
 The plugin is designed to keep notes on the jabber server with the
 ability to access them from anywhere using Psi+ or Miranda IM.
 
-Translate Plugin
+ * Translate Plugin
 This plugin allows you to convert selected text into another language.
 
-Video Status Changer Plugin
+ * Video Status Changer Plugin
 This plugin is designed to set the custom status when you see the
 video in selected video player. Communication with players made by
 D-Bus.
 
-Skins Plugin
+ * Skins Plugin
 This plugin is designed to create, store and apply skins to Psi+.
 
-Yandex Narod Plugin
+ * Yandex Narod Plugin
 
-Off-the-Record Messaging Plugin
+ * Off-the-Record Messaging Plugin
 a cryptographic protocol that provides strong encryption for instant
 messaging conversations. OTR uses a combination of the AES
 symmetric-key algorithm, the Diffie–Hellman key exchange, and the SHA-1
 hash function. In addition to authentication and encryption, OTR
 provides perfect forward secrecy and malleable encryption.
 
-PSTO Plugin
+ * PSTO Plugin
 Instant bloging service.
+
+ * GnuPG Plugin
+A front end for gpg. Allow to handle keys.
 
 %prep
 %setup -q -n %{name}-%{version}-%{rev}
@@ -318,9 +322,10 @@ fi
 %{_libdir}/psi-plus/plugins/
 
 %changelog
-* Tue Jan 15 2013 Ivan Romanov <drizt@land.ru> - 1:0.16-0.3.20130115git51.R
-- updated to r51
+* Wed Jan 23 2013 Ivan Romanov <drizt@land.ru> - 1:0.16-0.3.20130123git61%{?dist}
+- updated to r61
 - added devel plugins. psto and otr.
+- uses url for l10n tarball instead of local one
 
 * Mon Oct 29 2012 Ivan Romanov <drizt@land.ru> - 1:0.16-0.2.20121029git29.R
 - updated to r29
