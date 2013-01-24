@@ -1,5 +1,5 @@
-%define rev 20130123git61
-%define rev_l10n b1089e6
+%define rev 20130124git61
+%define rev_l10n 4d68b7b
 %define genericplugins attentionplugin autoreplyplugin birthdayreminderplugin captchaformsplugin chessplugin cleanerplugin clientswitcherplugin conferenceloggerplugin contentdownloaderplugin extendedmenuplugin extendedoptionsplugin gmailserviceplugin gomokugameplugin historykeeperplugin icqdieplugin imageplugin jabberdiskplugin juickplugin pepchangenotifyplugin qipxstatusesplugin screenshotplugin skinsplugin stopspamplugin storagenotesplugin translateplugin videostatusplugin watcherplugin yandexnarodplugin gnupgplugin
 %define unixplugins gnome3supportplugin
 %define devplugins pstoplugin otrplugin
@@ -21,11 +21,13 @@ Group:          Applications/Internet
 # Sources is latest snapshot from git://github.com/psi-im/psi.git with applyed all worked patches from psi-dev team.
 # Sources also include plugins. There isn't development files therefore plugin interface very unstable.
 # So i can't split plugins to separate package. I need to maintain it together.
-Source0:        http://files.psi-plus.com/sources/%{name}-%{version}-20130123git61.tar.bz2
+Source0:        http://files.psi-plus.com/sources/%{name}-%{version}-%{rev}.tar.bz2
 # Translation from  https://github.com/psi-plus/psi-plus-l10n
-Source1:        http://files.psi-plus.com/sources/psi-plus-l10n-b1089e6.tar.bz2
+Source1:        http://files.psi-plus.com/sources/%{name}-l10n-%{rev_l10n}.tar.bz2
 # I use this script to make tarballs with Psi+ sources and translations
 Source2:        generate-tarball.sh
+
+Patch0:        psi-plus-psimedia.patch
 
 BuildRequires:  qt4-devel
 BuildRequires:  zlib-devel
@@ -39,6 +41,8 @@ BuildRequires:  openssl-devel
 BuildRequires:  qt4-webkit-devel
 BuildRequires:  minizip-devel
 BuildRequires:  gettext
+BuildRequires:  libotr-devel
+BuildRequires:  libtidy-devel
 
 Requires:       sox%{?_isa}
 Requires:       gnupg
@@ -187,6 +191,7 @@ A front end for gpg. Allow to handle keys.
 
 %prep
 %setup -q -n %{name}-%{version}-%{rev}
+%patch0 -p1
 
 # Remove bundled libraries
 rm -fr src/libpsi/tools/zip/minizip
@@ -210,7 +215,8 @@ qconf-qt4
         --no-separate-debug-info   \
         --enable-webkit            \
         --enable-plugins           \
-        --enable-whiteboarding
+        --enable-whiteboarding     \
+        --with-psimedia-path=%{_libdir}/psimedia/libgstprovider.so
 
 make %{?_smp_mflags}
 
@@ -324,11 +330,13 @@ fi
 %{_libdir}/psi-plus/plugins/
 
 %changelog
-* Wed Jan 23 2013 Ivan Romanov <drizt@land.ru> - 1:0.16-0.3.20130123git61.R
+* Thu Jan 24 2013 Ivan Romanov <drizt@land.ru> - 1:0.16-0.3.20130124git61.R
 - updated to r61
 - added devel plugins. psto and otr.
 - uses url for l10n tarball instead of local one
 - i18n has no arch
+- added libtidy and libotr BR for otrplugin
+- added patch to make working psimedia with psi-plus
 
 * Mon Oct 29 2012 Ivan Romanov <drizt@land.ru> - 1:0.16-0.2.20121029git29.R
 - updated to r29
