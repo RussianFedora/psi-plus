@@ -19,7 +19,7 @@ index 0000000..cae88b6
 +/*
 +-----BEGIN QCMOD-----
 +name: psimedia
-+arg: with-psimedia-path=[path],Extra search path to libgstprovider.so
++arg: psimedia-path=[path],Extra search path to libgstprovider.so
 +-----END QCMOD-----
 +*/
 +
@@ -35,7 +35,7 @@ index 0000000..cae88b6
 +
 +	bool exec()
 +	{
-+		QString path = conf->getenv("QC_WITH_PSIMEDIA_PATH");
++		QString path = conf->getenv("QC_PSIMEDIA_PATH");
 +		if (path.isEmpty()) {
 +			return false;
 +		}

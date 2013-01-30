@@ -1,5 +1,5 @@
-%define rev 20130124git61
-%define rev_l10n 4d68b7b
+%define rev 20130130git71
+%define rev_l10n 400f746
 %define genericplugins attentionplugin autoreplyplugin birthdayreminderplugin captchaformsplugin chessplugin cleanerplugin clientswitcherplugin conferenceloggerplugin contentdownloaderplugin extendedmenuplugin extendedoptionsplugin gmailserviceplugin gomokugameplugin historykeeperplugin icqdieplugin imageplugin jabberdiskplugin juickplugin pepchangenotifyplugin qipxstatusesplugin screenshotplugin skinsplugin stopspamplugin storagenotesplugin translateplugin videostatusplugin watcherplugin yandexnarodplugin gnupgplugin
 %define unixplugins gnome3supportplugin
 %define devplugins pstoplugin otrplugin
@@ -7,7 +7,7 @@
 Summary:        Jabber client based on Qt
 Name:           psi-plus
 Version:        0.16
-Release:        0.3.%{rev}%{?dist}
+Release:        0.4.%{rev}%{?dist}
 Epoch:          1
 
 URL:            http://code.google.com/p/psi-dev/
@@ -216,7 +216,7 @@ qconf-qt4
         --enable-webkit            \
         --enable-plugins           \
         --enable-whiteboarding     \
-        --with-psimedia-path=%{_libdir}/psimedia/libgstprovider.so
+        --psimedia-path=%{_libdir}/psi/plugins/libgstprovider.so
 
 make %{?_smp_mflags}
 
@@ -330,6 +330,10 @@ fi
 %{_libdir}/psi-plus/plugins/
 
 %changelog
+* Wed Jan 30 2013 Ivan Romanov <drizt@land.ru> - 1:0.16-0.4.20130130git71.R
+- updated to r71
+- changes in psi-plus-psimedia patch
+
 * Thu Jan 24 2013 Ivan Romanov <drizt@land.ru> - 1:0.16-0.3.20130124git61.R
 - updated to r61
 - added devel plugins. psto and otr.

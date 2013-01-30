@@ -46,6 +46,9 @@ cp -r main/iconsets/* psi-plus-${psiver}/iconsets
 
 rm -fr main
 
+# Drop generating files
+rm -f psi-plus-${psiver}/configure*
+
 echo "0.16.${rev}-webkit (@@DATE@@)" > psi-plus-${psiver}/version
 tar --exclude='.*' -cjf psi-plus-${psiver}.tar.bz2 psi-plus-${psiver}
 rm -fr psi-plus-${psiver}
