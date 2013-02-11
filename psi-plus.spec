@@ -1,5 +1,5 @@
-%define rev 20130131git75
-%define rev_l10n 400f746
+%define rev 20130212git90
+%define rev_l10n eb42cb1
 %define genericplugins attentionplugin autoreplyplugin birthdayreminderplugin captchaformsplugin chessplugin cleanerplugin clientswitcherplugin conferenceloggerplugin contentdownloaderplugin extendedmenuplugin extendedoptionsplugin gmailserviceplugin gomokugameplugin historykeeperplugin icqdieplugin imageplugin jabberdiskplugin juickplugin pepchangenotifyplugin qipxstatusesplugin screenshotplugin skinsplugin stopspamplugin storagenotesplugin translateplugin videostatusplugin watcherplugin yandexnarodplugin gnupgplugin
 %define unixplugins gnome3supportplugin
 %define devplugins pstoplugin otrplugin
@@ -7,7 +7,7 @@
 Summary:        Jabber client based on Qt
 Name:           psi-plus
 Version:        0.16
-Release:        0.6.%{rev}%{?dist}
+Release:        0.7.%{rev}%{?dist}
 Epoch:          1
 
 URL:            http://code.google.com/p/psi-dev/
@@ -330,6 +330,9 @@ fi
 %{_libdir}/psi-plus/plugins/
 
 %changelog
+* Mon Feb 11 2013 Ivan Romanov <drizt@land.ru> - 1:0.16-0.7.20130212git90.R
+- updated to r90
+
 * Wed Jan 30 2013 Ivan Romanov <drizt@land.ru> - 1:0.16-0.6.20130131git75.R
 - updated to r75
 
