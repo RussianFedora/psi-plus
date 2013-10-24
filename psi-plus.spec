@@ -1,13 +1,13 @@
-%define rev 20130412git109
-%define rev_l10n 24aa924
-%define genericplugins attentionplugin autoreplyplugin birthdayreminderplugin captchaformsplugin chessplugin cleanerplugin clientswitcherplugin conferenceloggerplugin contentdownloaderplugin extendedmenuplugin extendedoptionsplugin gmailserviceplugin gomokugameplugin historykeeperplugin icqdieplugin imageplugin jabberdiskplugin juickplugin pepchangenotifyplugin qipxstatusesplugin screenshotplugin skinsplugin stopspamplugin storagenotesplugin translateplugin videostatusplugin watcherplugin yandexnarodplugin gnupgplugin
+%define rev 20131024git242
+%define rev_l10n 5b1671d
+%define genericplugins attentionplugin autoreplyplugin birthdayreminderplugin captchaformsplugin chessplugin cleanerplugin clientswitcherplugin conferenceloggerplugin contentdownloaderplugin extendedmenuplugin extendedoptionsplugin gmailserviceplugin gomokugameplugin historykeeperplugin icqdieplugin imageplugin jabberdiskplugin juickplugin pepchangenotifyplugin qipxstatusesplugin screenshotplugin skinsplugin stopspamplugin storagenotesplugin translateplugin videostatusplugin watcherplugin gnupgplugin otrplugin
 %define unixplugins gnome3supportplugin
-%define devplugins pstoplugin otrplugin
+%define devplugins pstoplugin
 
 Summary:        Jabber client based on Qt
 Name:           psi-plus
 Version:        0.16
-Release:        0.8.%{rev}%{?dist}
+Release:        0.9.%{rev}%{?dist}
 Epoch:          1
 
 URL:            http://code.google.com/p/psi-dev/
@@ -27,7 +27,8 @@ Source1:        http://files.psi-plus.com/sources/%{name}-l10n-%{rev_l10n}.tar.b
 # I use this script to make tarballs with Psi+ sources and translations
 Source2:        generate-tarball.sh
 
-Patch0:        psi-plus-psimedia.patch
+Patch0:         psi-plus-psimedia.patch
+Patch1:         psi-new-history.patch
 
 BuildRequires:  qt4-devel
 BuildRequires:  zlib-devel
@@ -43,6 +44,8 @@ BuildRequires:  minizip-devel
 BuildRequires:  gettext
 BuildRequires:  libotr-devel
 BuildRequires:  libtidy-devel
+BuildRequires:  libidn-devel
+BuildRequires:  qjson-devel
 
 Requires:       sox%{?_isa}
 Requires:       gnupg
@@ -174,8 +177,6 @@ D-Bus.
  * Skins Plugin
 This plugin is designed to create, store and apply skins to Psi+.
 
- * Yandex Narod Plugin
-
  * Off-the-Record Messaging Plugin
 a cryptographic protocol that provides strong encryption for instant
 messaging conversations. OTR uses a combination of the AES
@@ -192,6 +193,7 @@ A front end for gpg. Allow to handle keys.
 %prep
 %setup -q -n %{name}-%{version}-%{rev}
 %patch0 -p1
+%patch1 -p1
 
 # Remove bundled libraries
 rm -fr src/libpsi/tools/zip/minizip
@@ -330,6 +332,12 @@ fi
 %{_libdir}/psi-plus/plugins/
 
 %changelog
+* Thu Oct 24 2013 Ivan Romanov <drizt@land.ru> - 1:0.16-0.9.20131024git242.R
+- updated to r242
+- added libidn to BR
+- otr plugin now is stable
+- dropped yandexnarod plugin
+
 * Thu Apr 11 2013 Ivan Romanov <drizt@land.ru> - 1:0.16-0.8.20130412git109.R
 - updated to r109
 
