@@ -17,7 +17,6 @@ URL:            http://code.google.com/p/psi-dev/
 # MIT/X11 - JDNS for iris library
 # zlib/libpng - UnZip 0.15 additionnal library
 License:        GPLv2+ and LGPLv2+ and BSD and MIT and zlib
-Group:          Applications/Internet
 # Sources is latest snapshot from git://github.com/psi-im/psi.git with applyed all worked patches from psi-dev team.
 # Sources also include plugins. There isn't development files therefore plugin interface very unstable.
 # So i can't split plugins to separate package. I need to maintain it together.
@@ -60,7 +59,6 @@ Psi+ - Psi IM Mod by psi-dev@conference.jabber.ru
 
 %package        i18n
 Summary:        Language packs for Psi
-Group:          Applications/Internet
 Requires:       %{name} = %{epoch}:%{version}-%{release}
 BuildArch:      noarch
 
@@ -71,7 +69,6 @@ This package adds internationalization to Psi+.
 %package        plugins
 Summary:        Plugins pack for Psi+
 License:        GPLv2+
-Group:          Applications/Internet
 Requires:       %{name}%{?_isa} = %{epoch}:%{version}-%{release}
 
 
@@ -336,6 +333,7 @@ fi
 * Wed Jun 11 2014 Ivan Romanov <drizt@land.ru> - 1:0.16-0.11.20140611git366.R
 - updated to r366
 - use system qjdns
+- dropped obsoletes Group tag
 
 * Tue Jan 28 2014 Ivan Romanov <drizt@land.ru> - 1:0.16-0.10.20140128git271.R
 - updated to r271
