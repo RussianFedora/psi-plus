@@ -33,7 +33,7 @@ rm -fr psi-plus-l10n
 # Prepare psi-plus folder
 rm -fr psi-plus-${psiver}
 mkdir psi-plus-${psiver}
-cp -r psi/* psi-plus-${psiver}
+cp -r psi/* psi/.qmake.cache.in psi-plus-${psiver}
 rm -fr psi
 
 # Copy plugins sources to psi dir
@@ -50,5 +50,7 @@ rm -fr main
 rm -f psi-plus-${psiver}/configure*
 
 echo "0.16.${rev}-webkit (@@DATE@@)" > psi-plus-${psiver}/version
-tar --exclude='.*' -cjf psi-plus-${psiver}.tar.bz2 psi-plus-${psiver}
-rm -fr psi-plus-${psiver}
+find psi-plus-${psiver} -name '.*' > exclude.files
+sed -i "/psi-plus-${psiver}\/.qmake.cache.in/d" exclude.files
+tar -X exclude.files -cjf psi-plus-${psiver}.tar.bz2 psi-plus-${psiver}
+rm -fr psi-plus-${psiver} exclude.files exclude.files.backup
