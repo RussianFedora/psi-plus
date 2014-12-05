@@ -1,5 +1,5 @@
-%define rev 20141114git436
-%define rev_l10n 1ddb75a
+%define rev 20141205git440
+%define rev_l10n 52f378a
 %define genericplugins attentionplugin autoreplyplugin birthdayreminderplugin captchaformsplugin chessplugin cleanerplugin clientswitcherplugin conferenceloggerplugin contentdownloaderplugin extendedmenuplugin extendedoptionsplugin gmailserviceplugin gomokugameplugin historykeeperplugin icqdieplugin imageplugin jabberdiskplugin juickplugin pepchangenotifyplugin qipxstatusesplugin screenshotplugin skinsplugin stopspamplugin storagenotesplugin translateplugin videostatusplugin watcherplugin gnupgplugin otrplugin
 %define unixplugins gnome3supportplugin
 %define devplugins pstoplugin
@@ -330,8 +330,8 @@ fi
 %{_libdir}/psi-plus/plugins/
 
 %changelog
-* Sun Oct 26 2014 Ivan Romanov <drizt@land.ru> - 1:0.16-0.12.20141114git436.R
-- updated to r436
+* Fri Dec  5 2014 Ivan Romanov <drizt@land.ru> - 1:0.16-0.12.20141205git440.R
+- updated to r440
 - updated history patch
 - updated generate-tarball.sh
 
