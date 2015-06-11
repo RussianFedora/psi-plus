@@ -7,7 +7,7 @@
 Summary:        Jabber client based on Qt
 Name:           psi-plus
 Version:        0.16
-Release:        0.12.%{rev}%{?dist}
+Release:        0.13.%{rev}%{?dist}
 Epoch:          1
 
 URL:            http://code.google.com/p/psi-dev/
@@ -29,30 +29,43 @@ Source2:        generate-tarball.sh
 Patch0:         psi-plus-psimedia.patch
 Patch1:         psi-new-history.patch
 
-BuildRequires:  qt4-devel
-BuildRequires:  zlib-devel
+BuildRequires:  pkgconfig(QtCore)
+BuildRequires:  pkgconfig(QtGui)
+BuildRequires:  pkgconfig(QtWebKit)
+BuildRequires:  pkgconfig(QtSvg)
+BuildRequires:  pkgconfig(QtXml)
+BuildRequires:  pkgconfig(QtXmlPatterns)
+BuildRequires:  pkgconfig(QtNetwork)
+BuildRequires:  pkgconfig(QtDBus)
+BuildRequires:  pkgconfig(QtSql)
+BuildRequires:  pkgconfig(QtScript)
+BuildRequires:  pkgconfig(zlib)
+BuildRequires:  pkgconfig(QJson)
+BuildRequires:  pkgconfig(qjdns)
+BuildRequires:  pkgconfig(enchant)
+BuildRequires:  pkgconfig(xscrnsaver)
+BuildRequires:  pkgconfig(openssl)
+BuildRequires:  pkgconfig(minizip)
+BuildRequires:  pkgconfig(qca2)
+BuildRequires:  pkgconfig(glib-2.0)
+BuildRequires:  pkgconfig(libotr)
+BuildRequires:  pkgconfig(libidn)
+
 BuildRequires:  desktop-file-utils
-BuildRequires:  qca2-devel
-BuildRequires:  glib2-devel
 BuildRequires:  qconf >= 1.4-2
-BuildRequires:  enchant-devel
-BuildRequires:  libXScrnSaver-devel
-BuildRequires:  openssl-devel
-BuildRequires:  qt4-webkit-devel
-BuildRequires:  minizip-devel
 BuildRequires:  gettext
-BuildRequires:  libotr-devel
 BuildRequires:  libtidy-devel
-BuildRequires:  libidn-devel
-BuildRequires:  qjson-devel
-BuildRequires:  qjdns-devel
 
 Requires:       sox%{?_isa}
 Requires:       gnupg
 # Required for SSL/TLS connections
 Requires:       qca-ossl%{?_isa}
+
+# epel7 has no qca-gnupg package
+%if 0%{?rhel} != 7
 # Required for GnuPG encryption
 Requires:       qca-gnupg%{?_isa}
+%endif
 
 %description
 Psi+ - Psi IM Mod by psi-dev@conference.jabber.ru
@@ -330,6 +343,10 @@ fi
 %{_libdir}/psi-plus/plugins/
 
 %changelog
+* Thu Jun 11 2015 Ivan Romanov <drizt@land.ru> - 1:0.16-0.13.20141205git440.R
+- no qca-gnupg in epel7
+- use pkgpath(...) style in BR
+
 * Fri Dec  5 2014 Ivan Romanov <drizt@land.ru> - 1:0.16-0.12.20141205git440.R
 - updated to r440
 - updated history patch
