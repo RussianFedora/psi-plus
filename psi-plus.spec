@@ -7,7 +7,7 @@
 Summary:        Jabber client based on Qt
 Name:           psi-plus
 Version:        0.16
-Release:        0.13.%{rev}%{?dist}
+Release:        0.14.%{rev}%{?dist}
 Epoch:          1
 
 URL:            http://code.google.com/p/psi-dev/
@@ -41,7 +41,7 @@ BuildRequires:  pkgconfig(QtSql)
 BuildRequires:  pkgconfig(QtScript)
 BuildRequires:  pkgconfig(zlib)
 BuildRequires:  pkgconfig(QJson)
-BuildRequires:  pkgconfig(qjdns)
+BuildRequires:  pkgconfig(qjdns-qt4)
 BuildRequires:  pkgconfig(enchant)
 BuildRequires:  pkgconfig(xscrnsaver)
 BuildRequires:  pkgconfig(openssl)
@@ -343,6 +343,9 @@ fi
 %{_libdir}/psi-plus/plugins/
 
 %changelog
+* Thu Aug 27 2015 Ivan Romanov <drizt@land.ru> - 1:0.16-0.14.20141205git440.R
+- qjdns renamed
+
 * Thu Jun 11 2015 Ivan Romanov <drizt@land.ru> - 1:0.16-0.13.20141205git440.R
 - no qca-gnupg in epel7
 - use pkgpath(...) style in BR
