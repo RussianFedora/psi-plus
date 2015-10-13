@@ -69,7 +69,7 @@ Requires:       qca-gnupg%{?_isa}
 
 # New Fedora rules allow to use bundled libraries
 # https://bugzilla.redhat.com/show_bug.cgi?id=737304#c15
-Provides:       bundled(iris) = $version
+Provides:       bundled(iris) = %{version}
 
 %description
 Psi+ - Psi IM Mod by psi-dev@conference.jabber.ru
