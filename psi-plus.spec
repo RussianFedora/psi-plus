@@ -7,7 +7,7 @@
 Summary:        Jabber client based on Qt
 Name:           psi-plus
 Version:        0.16
-Release:        0.14.%{rev}%{?dist}
+Release:        0.15.%{rev}%{?dist}
 Epoch:          1
 
 URL:            http://code.google.com/p/psi-dev/
@@ -66,6 +66,10 @@ Requires:       qca-ossl%{?_isa}
 # Required for GnuPG encryption
 Requires:       qca-gnupg%{?_isa}
 %endif
+
+# New Fedora rules allow to use bundled libraries
+# https://bugzilla.redhat.com/show_bug.cgi?id=737304#c15
+Provides:       bundled(iris) = $version
 
 %description
 Psi+ - Psi IM Mod by psi-dev@conference.jabber.ru
@@ -343,6 +347,9 @@ fi
 %{_libdir}/psi-plus/plugins/
 
 %changelog
+* Tue Oct 13 2015 Ivan Romanov <drizt@land.ru> - 1:0.16-0.15.20141205git440.R
+- provide bundled iris
+
 * Thu Aug 27 2015 Ivan Romanov <drizt@land.ru> - 1:0.16-0.14.20141205git440.R
 - qjdns renamed
 
