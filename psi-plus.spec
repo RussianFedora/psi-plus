@@ -7,7 +7,7 @@
 Summary:        Jabber client based on Qt
 Name:           psi-plus
 Version:        0.16
-Release:        0.15.%{rev}%{?dist}
+Release:        0.16.%{rev}%{?dist}
 Epoch:          1
 
 URL:            http://code.google.com/p/psi-dev/
@@ -332,7 +332,8 @@ if [ -x %{_bindir}/gtk-update-icon-cache ]; then
 fi
 
 %files
-%doc README COPYING
+%license COPYING
+%doc README
 %{_bindir}/psi-plus
 %{_datadir}/applications/psi-plus.desktop
 %{_datadir}/icons/hicolor/*/apps/psi-plus.png
@@ -347,6 +348,9 @@ fi
 %{_libdir}/psi-plus/plugins/
 
 %changelog
+* Wed Oct 14 2015 Ivan Romanov <drizt@land.ru> - 1:0.16-0.16.20141205git440.R
+- use %%license tag
+
 * Tue Oct 13 2015 Ivan Romanov <drizt@land.ru> - 1:0.16-0.15.20141205git440.R
 - provide bundled iris
 
