@@ -1,22 +1,20 @@
-%define rev 20141205git440
-%define rev_l10n 52f378a
-%define genericplugins attentionplugin autoreplyplugin birthdayreminderplugin captchaformsplugin chessplugin cleanerplugin clientswitcherplugin conferenceloggerplugin contentdownloaderplugin extendedmenuplugin extendedoptionsplugin gmailserviceplugin gomokugameplugin historykeeperplugin icqdieplugin imageplugin jabberdiskplugin juickplugin pepchangenotifyplugin qipxstatusesplugin screenshotplugin skinsplugin stopspamplugin storagenotesplugin translateplugin videostatusplugin watcherplugin gnupgplugin otrplugin
-%define unixplugins gnome3supportplugin
-%define devplugins pstoplugin
+%global rev 20141205git440
+%global rev_l10n 52f378a
+%global genericplugins attentionplugin autoreplyplugin birthdayreminderplugin captchaformsplugin chessplugin cleanerplugin clientswitcherplugin conferenceloggerplugin contentdownloaderplugin extendedmenuplugin extendedoptionsplugin gmailserviceplugin gomokugameplugin historykeeperplugin icqdieplugin imageplugin jabberdiskplugin juickplugin pepchangenotifyplugin qipxstatusesplugin screenshotplugin skinsplugin stopspamplugin storagenotesplugin translateplugin videostatusplugin watcherplugin gnupgplugin otrplugin
+%global unixplugins gnome3supportplugin
+%global devplugins pstoplugin
 
 Summary:        Jabber client based on Qt
 Name:           psi-plus
 Version:        0.16
-Release:        0.16.%{rev}%{?dist}
+Release:        0.17.%{rev}%{?dist}
 Epoch:          1
 
 URL:            http://code.google.com/p/psi-dev/
 # GPLv2+ - core of Psi+
-# LGPLv2.1+ - iris library, Psi+ widgets, qca, psimedia, several Psi+ tools
-# BSD - botantools for qca library
-# MIT/X11 - JDNS for iris library
+# LGPLv2.1+ - iris library, Psi+ widgets, several Psi+ tools
 # zlib/libpng - UnZip 0.15 additionnal library
-License:        GPLv2+ and LGPLv2+ and BSD and MIT and zlib
+License:        GPLv2+ and LGPLv2+ and zlib
 # Sources is latest snapshot from git://github.com/psi-im/psi.git with applyed all worked patches from psi-dev team.
 # Sources also include plugins. There isn't development files therefore plugin interface very unstable.
 # So i can't split plugins to separate package. I need to maintain it together.
@@ -56,6 +54,7 @@ BuildRequires:  qconf >= 1.4-2
 BuildRequires:  gettext
 BuildRequires:  libtidy-devel
 
+Requires:       %{name}-common = %{epoch}:%{version}-%{release}
 Requires:       sox%{?_isa}
 Requires:       gnupg
 # Required for SSL/TLS connections
@@ -67,9 +66,12 @@ Requires:       qca-ossl%{?_isa}
 Requires:       qca-gnupg%{?_isa}
 %endif
 
+# hicolor-icon-theme is owner of themed icons folders
+Requires:       hicolor-icon-theme
+
 # New Fedora rules allow to use bundled libraries
 # https://bugzilla.redhat.com/show_bug.cgi?id=737304#c15
-Provides:       bundled(iris) = %{version}
+Provides:       bundled(iris)
 
 %description
 Psi+ - Psi IM Mod by psi-dev@conference.jabber.ru
@@ -85,8 +87,19 @@ This package adds internationalization to Psi+.
 
 %package        plugins
 Summary:        Plugins pack for Psi+
-License:        GPLv2+
+# GPLv2 is used for the most plugins
+# BSD - screenshot plugin
+# Beerware - icqdie plugin
+License:        GPLv2+ and BSD and Beerware
 Requires:       %{name}%{?_isa} = %{epoch}:%{version}-%{release}
+
+%package        common
+Summary:        Noarch resources for Psi+
+BuildArch:      noarch
+
+%description    common
+Psi+ - Psi IM Mod by psi-dev@conference.jabber.ru
+This package contains huge of base mandatory resources for Psi+.
 
 
 %description    plugins
@@ -210,8 +223,12 @@ A front end for gpg. Allow to handle keys.
 %patch0 -p1
 %patch1 -p1
 
+# fix rpmlint spurious-executable-perm
+find . -name '*.cpp' -or -name '*.h' | xargs chmod 644
+
 # Remove bundled libraries
 rm -fr src/libpsi/tools/zip/minizip
+rm -fr iris/src/jdns
 
 # Psi+ always uses last iris version. So I need to provide bundled
 # iris to guarantee efficiency of program.
@@ -235,7 +252,7 @@ qconf-qt4
         --enable-whiteboarding     \
         --psimedia-path=%{_libdir}/psi/plugins/libgstprovider.so
 
-make %{?_smp_mflags}
+%make_build
 
 pushd translations
 lrelease-qt4 *.ts
@@ -273,7 +290,8 @@ done
 popd
 
 %install
-# Qt don't understand DESTDIR. So I need to use INSTALL_ROOT instead.
+# Qt doesn't understand DESTDIR. So I need to use INSTALL_ROOT instead of.
+# %%make_install can't be used here.
 INSTALL_ROOT=$RPM_BUILD_ROOT make install
 
 # README and COPYING must be holds in doc dir. See %%doc tag in %%files
@@ -281,12 +299,8 @@ rm $RPM_BUILD_ROOT%{_datadir}/psi-plus/README
 rm $RPM_BUILD_ROOT%{_datadir}/psi-plus/COPYING
 
 # Install languages
-cp translations/*.qm $RPM_BUILD_ROOT%{_datadir}/%{name}
+cp -p translations/*.qm $RPM_BUILD_ROOT%{_datadir}/%{name}
 %find_lang psi --with-qt
-
-# Menu file is being installed when make install
-# so it need only to check this allready installed file
-desktop-file-validate $RPM_BUILD_ROOT%{_datadir}/applications/psi-plus.desktop
 
 mkdir -p $RPM_BUILD_ROOT%{_libdir}/psi-plus/plugins
 
@@ -314,22 +328,28 @@ pushd src/plugins
 # Install all plugins
 for dir in ${allplugins}
 do
-  cp $dir/*.so $RPM_BUILD_ROOT%{_libdir}/psi-plus/plugins/
+  cp -p $dir/*.so $RPM_BUILD_ROOT%{_libdir}/psi-plus/plugins/
 done
 popd
 
-%post
-touch --no-create %{_datadir}/icons/hicolor || :
-if [ -x %{_bindir}/gtk-update-icon-cache ]; then
-    %{_bindir}/gtk-update-icon-cache --quiet %{_datadir}/icons/hicolor || :
-fi
+%check
+# Menu file is being installed when make install
+# so it need only to check this allready installed file
+desktop-file-validate $RPM_BUILD_ROOT%{_datadir}/applications/psi-plus.desktop
 
+%post
+/bin/touch --no-create %{_datadir}/icons/hicolor &>/dev/null || :
+/usr/bin/update-desktop-database &> /dev/null || :
 
 %postun
-touch --no-create %{_datadir}/icons/hicolor || :
-if [ -x %{_bindir}/gtk-update-icon-cache ]; then
-    %{_bindir}/gtk-update-icon-cache --quiet %{_datadir}/icons/hicolor || :
+if [ $1 -eq 0 ] ; then
+    /bin/touch --no-create %{_datadir}/icons/hicolor &>/dev/null
+    /usr/bin/gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 fi
+/usr/bin/update-desktop-database &> /dev/null || :
+
+%posttrans
+/usr/bin/gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 %files
 %license COPYING
@@ -337,17 +357,32 @@ fi
 %{_bindir}/psi-plus
 %{_datadir}/applications/psi-plus.desktop
 %{_datadir}/icons/hicolor/*/apps/psi-plus.png
-%dir %{_datadir}/psi-plus/
-%{_datadir}/psi-plus/
-%exclude %{_datadir}/psi-plus/*.qm
-%dir %{_libdir}/psi-plus/
 
 %files i18n -f psi.lang
 
 %files plugins
-%{_libdir}/psi-plus/plugins/
+%{_libdir}/psi-plus
+
+%files common
+%{_datadir}/psi-plus
+%exclude %{_datadir}/psi-plus/*.qm
 
 %changelog
+* Sat Oct 17 2015 Ivan Romanov <drizt@land.ru> - 1:0.16-0.17.20141205git440.R
+- dropped version for bundled iris
+- added hicolor-icon-theme to Requires
+- fixed post, postun and posttrans scriptlets
+- moved noarch resources to common subpackage
+- moved desktop-file-validate to %%check section
+- use %%global instead of %%define
+- preserve timestamp
+- use modern %%make_build
+- some fixes with licensies
+- fixed %%{_libdir}/psi-plus is not owned any package
+- fix duplicated /usr/share/psi-plus
+- remove bundled jdns
+- fix rpmlint spurious-executable-perm
+
 * Wed Oct 14 2015 Ivan Romanov <drizt@land.ru> - 1:0.16-0.16.20141205git440.R
 - use %%license tag
 
