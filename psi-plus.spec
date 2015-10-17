@@ -7,7 +7,7 @@
 Summary:        Jabber client based on Qt
 Name:           psi-plus
 Version:        0.16
-Release:        0.17.%{rev}%{?dist}
+Release:        0.18.%{rev}%{?dist}
 Epoch:          1
 
 URL:            http://code.google.com/p/psi-dev/
@@ -39,7 +39,12 @@ BuildRequires:  pkgconfig(QtSql)
 BuildRequires:  pkgconfig(QtScript)
 BuildRequires:  pkgconfig(zlib)
 BuildRequires:  pkgconfig(QJson)
+%if 0%{?rhel} != 7
+# Required for GnuPG encryption
 BuildRequires:  pkgconfig(qjdns-qt4)
+%else
+BuildRequires:  pkgconfig(qjdns)
+%endif
 BuildRequires:  pkgconfig(enchant)
 BuildRequires:  pkgconfig(xscrnsaver)
 BuildRequires:  pkgconfig(openssl)
@@ -252,7 +257,7 @@ qconf-qt4
         --enable-whiteboarding     \
         --psimedia-path=%{_libdir}/psi/plugins/libgstprovider.so
 
-%make_build
+make %{?_smp_mflags}
 
 pushd translations
 lrelease-qt4 *.ts
@@ -368,6 +373,10 @@ fi
 %exclude %{_datadir}/psi-plus/*.qm
 
 %changelog
+* Sat Oct 17 2015 Ivan Romanov <drizt@land.ru> - 1:0.16-0.18.20141205git440%{?dist}
+- no %%make_build in epel7
+- no qjdns-qt4 in epel7
+
 * Sat Oct 17 2015 Ivan Romanov <drizt@land.ru> - 1:0.16-0.17.20141205git440.R
 - dropped version for bundled iris
 - added hicolor-icon-theme to Requires
