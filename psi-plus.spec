@@ -373,7 +373,7 @@ fi
 %exclude %{_datadir}/psi-plus/*.qm
 
 %changelog
-* Sat Oct 17 2015 Ivan Romanov <drizt@land.ru> - 1:0.16-0.18.20141205git440%{?dist}
+* Sat Oct 17 2015 Ivan Romanov <drizt@land.ru> - 1:0.16-0.18.20141205git440.R
 - no %%make_build in epel7
 - no qjdns-qt4 in epel7
 
