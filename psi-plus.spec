@@ -7,7 +7,7 @@
 Summary:        Jabber client based on Qt
 Name:           psi-plus
 Version:        0.16
-Release:        0.18.%{rev}%{?dist}
+Release:        0.19.%{rev}%{?dist}
 Epoch:          1
 
 URL:            http://code.google.com/p/psi-dev/
@@ -357,8 +357,8 @@ fi
 /usr/bin/gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 %files
-%license COPYING
 %doc README
+%license COPYING
 %{_bindir}/psi-plus
 %{_datadir}/applications/psi-plus.desktop
 %{_datadir}/icons/hicolor/*/apps/psi-plus.png
@@ -369,10 +369,16 @@ fi
 %{_libdir}/psi-plus
 
 %files common
-%{_datadir}/psi-plus
+%license COPYING
+%dir %{_datadir}/psi-plus
+%{_datadir}/psi-plus/*
 %exclude %{_datadir}/psi-plus/*.qm
 
 %changelog
+* Mon Oct 19 2015 Ivan Romanov <drizt@land.ru> - 1:0.16-0.19.20141205git440
+- Dropped .R suffix from changelog for Fedora review purposes
+- Added license test to common subpackage
+
 * Sat Oct 17 2015 Ivan Romanov <drizt@land.ru> - 1:0.16-0.18.20141205git440.R
 - no %%make_build in epel7
 - no qjdns-qt4 in epel7
