@@ -7,7 +7,7 @@
 Summary:        Jabber client based on Qt
 Name:           psi-plus
 Version:        0.16
-Release:        0.19.%{rev}%{?dist}
+Release:        0.20.%{rev}%{?dist}
 Epoch:          1
 
 URL:            http://code.google.com/p/psi-dev/
@@ -90,14 +90,6 @@ BuildArch:      noarch
 Psi+ - Psi IM Mod by psi-dev@conference.jabber.ru
 This package adds internationalization to Psi+.
 
-%package        plugins
-Summary:        Plugins pack for Psi+
-# GPLv2 is used for the most plugins
-# BSD - screenshot plugin
-# Beerware - icqdie plugin
-License:        GPLv2+ and BSD and Beerware
-Requires:       %{name}%{?_isa} = %{epoch}:%{version}-%{release}
-
 %package        common
 Summary:        Noarch resources for Psi+
 BuildArch:      noarch
@@ -105,6 +97,16 @@ BuildArch:      noarch
 %description    common
 Psi+ - Psi IM Mod by psi-dev@conference.jabber.ru
 This package contains huge of base mandatory resources for Psi+.
+
+%package        plugins
+Summary:        Plugins pack for Psi+
+# GPLv2 is used for the most plugins
+# BSD - screenshot plugin
+# Beerware - icqdie plugin
+License:        GPLv2+ and BSD and Beerware
+Requires:       %{name}%{?_isa} = %{epoch}:%{version}-%{release}
+# Filter out plugins from provides
+%global __provides_exclude_from ^%{_libdir}/psi-plus
 
 
 %description    plugins
@@ -333,7 +335,7 @@ pushd src/plugins
 # Install all plugins
 for dir in ${allplugins}
 do
-  cp -p $dir/*.so $RPM_BUILD_ROOT%{_libdir}/psi-plus/plugins/
+  install -p -m 0755 $dir/*.so $RPM_BUILD_ROOT%{_libdir}/psi-plus/plugins/
 done
 popd
 
@@ -357,8 +359,8 @@ fi
 /usr/bin/gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 %files
-%doc README
 %license COPYING
+%doc README
 %{_bindir}/psi-plus
 %{_datadir}/applications/psi-plus.desktop
 %{_datadir}/icons/hicolor/*/apps/psi-plus.png
@@ -375,6 +377,10 @@ fi
 %exclude %{_datadir}/psi-plus/*.qm
 
 %changelog
+* Tue Oct 20 2015 Ivan Romanov <drizt@land.ru> - 1:0.16-0.20.20141205git440
+- set correct plugins permissions
+- Filter out plugins from provides
+
 * Mon Oct 19 2015 Ivan Romanov <drizt@land.ru> - 1:0.16-0.19.20141205git440
 - Dropped .R suffix from changelog for Fedora review purposes
 - Added license test to common subpackage
